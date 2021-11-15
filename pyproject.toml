@@ -17,6 +17,8 @@ python-memcached = "^1.59"
 psycopg2-binary = "^2.9.2"
 Pillow = "^8.4.0"
 autopep8 = "^1.6.0"
+django-ckeditor = "^6.1.0"
+django-widget-tweaks = "^1.4.9"
 
 [tool.poetry.dev-dependencies]
 

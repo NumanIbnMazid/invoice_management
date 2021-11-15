@@ -37,11 +37,17 @@ THIRD_PARTY_APPS = [
     "debug_toolbar",
     # Django Crispy Forms
     "crispy_forms",
+    # Django Widget Tweaks
+    "widget_tweaks",
+    # Django Ck Editor
+    'ckeditor',
+    'ckeditor_uploader',
 ]
 
 LOCAL_APPS = [
     "utils",
     "users",
+    "company",
 ]
 
 INSTALLED_APPS = [
@@ -73,6 +79,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # Django Debug Toolbar Middleware
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # Request Middleware
+    'middlewares.request_middleware.RequestMiddleware',
 ]
 
 """ *** Template Definitions *** """

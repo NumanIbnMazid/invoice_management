@@ -1,0 +1,186 @@
+{% extends 'admin_panel/base.html' %}
+
+{% load static %}
+
+{% load custom_tags %}
+
+<!-- extra styles -->
+{% block additional_styles %}
+<!-- JQuery DataTable CSS -->
+<link rel="stylesheet" type="text/css" href="{% static 'vendors/jquery-datatable/dataTables.bootstrap4.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'vendors/jquery-datatable/buttons.dataTables.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'vendors/jquery-datatable/datatable-custom.css' %}" />
+<!-- CKEDITOR JS -->
+<script>
+    window.CKEDITOR_BASEPATH = '/static/ckeditor/ckeditor/';
+</script>
+{% endblock %}
+
+{% block head_title %}
+{% block page_short_title %}
+{% block breadcrumb %}
+{{ page_short_title }}
+{% endblock %}
+{% endblock %}
+{% endblock %}
+{% block page_title %}
+{{ page_title }}
+{% endblock %}
+
+
+<!-- main content -->
+{% block content %}
+
+<div class="row">
+
+    <div class="container-fluid my-2">
+        {% if can_add_change == True %}
+
+        {% if not update_url == None and 'update' in request.path %}
+        {% if not object.slug == None %}
+        <!-- update url holder -->
+        <input type="hidden" name="updateURL" id="updateURL" value="{% url update_url slug=object.slug %}">
+        {% else %}
+        <input type="hidden" name="updateURL" id="updateURL" value="{% url update_url id=object.id %}">
+        {% endif %}
+        {% endif %}
+
+        <div class="d-flex">
+            <div class="">
+                <!-- Create Button trigger modal -->
+                <button type="button" class="btn btn-md text-deco-none btn btn-outline-primary js_create_{{namespace}}"
+                    data-toggle="modal" data-target="#modal-create-{{namespace}}">
+                    + {{ page_title }}
+                </button>
+            </div>
+            {% if not list_url == None or not create_url == None or not update_url == None or not delete_url == None %}
+            <div class="ml-2">
+
+                {% if not create_url == None and can_add_change == True %}
+                <a href="{% url create_url %}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i>
+                </a>
+                {% endif %}
+
+                {% if not list_url == None and can_view == True %}
+                <a href="{% url list_url %}" class="btn btn-primary" alt="Show List">
+                    <i class="fas fa-list"></i>
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        {% endif %}
+    </div>
+
+    {% if can_view == True %}
+
+    {% if not list_objects == None %}
+    <div
+        class="{% if fields_count > 7 %}col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12{% else %}col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12{% endif %} align-items-center">
+        <div class="card card-primary">
+            {% comment %}
+            <h4 class="card-title text-center mt-4 font-15 font-bold">
+                {{ namespace|title }} List
+            </h4>
+            {% endcomment %}
+            <div class="card-body">
+                {% if list_template == None %}
+                {% include 'admin_panel/snippets/datatable.html' %}
+                {% else %}
+                {% include list_template %}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% endif %}
+
+</div>
+
+{% if can_add_change == True %}
+{% include 'admin_panel/snippets/create-modal.html' %}
+{% endif %}
+
+
+{% if not delete_url == None and can_delete == True %}
+{% include 'admin_panel/snippets/delete-modal.html' %}
+{% endif %}
+
+
+{% endblock %}
+
+
+<!-- extra scripts -->
+{% block additional_scripts %}
+
+<!-- CKeditor Plugin -->
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+
+<!-- JQuery DataTable JS -->
+<script src="{% static 'vendors/jquery-datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'vendors/jquery-datatable/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'vendors/jquery-datatable/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'vendors/jquery-datatable/buttons.flash.min.js' %}"></script>
+<script src="{% static 'vendors/jquery-datatable/jszip.min.js' %}"></script>
+<script src="{% static 'vendors/jquery-datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'vendors/jquery-datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'vendors/jquery-datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'vendors/jquery-datatable/buttons.colVis.min.js' %}"></script>
+<script>
+    $(document).ready(function () {
+        $('#list-datatable').DataTable({
+            "pagingType": "full_numbers",
+            "dom": 'Bfrtip',
+            "stateSave": true,
+            "scrollCollapse": true,
+            "buttons": [
+                //'copy', 'csv', 'excel', 'pdf', 'print'
+                'colvis', 'copy', 'csv', 'excel', 'print'
+            ]
+        });
+    });
+</script>
+
+<!-- EZ View JS -->
+<script src="{% static 'vendors/ez-view/EZView.js' %}"></script>
+<script src="{% static 'vendors/ez-view/draggable.js' %}"></script>
+<script src="{% static 'vendors/ez-view/ez-conf.js' %}"></script>
+
+<!-- Open Modal With Update URL -->
+<script>
+    $(document).ready(function () {
+        let urlPath = window.location.pathname
+        let updateURL = $("#updateURL").val()
+        if (urlPath == updateURL) {
+            $('#modal-create-{{namespace}}').modal('show')
+        }
+    });
+</script>
+
+{% if form.errors %}
+<script>
+    $(document).ready(function () {
+        $('#modal-create-{{namespace}}').modal('show')
+    });
+</script>
+{% endif %}
+
+{% comment %}
+{% if not detail_url == None %}
+<script>
+    $(document).ready(function () {
+        $('.point-tr').click(function () {
+            window.location = $(this).attr('href');
+            return false;
+        });
+    });
+</script>
+{% endif %}
+{% endcomment %}
+
+{% endblock %}

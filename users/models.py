@@ -75,6 +75,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=100, null=True, blank=True)
     slug = models.SlugField(unique=True, max_length=254)
     updated_at = models.DateTimeField(auto_now=True)
+    is_company = models.BooleanField(default=False)
     """ Additional Fields Ends """
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)

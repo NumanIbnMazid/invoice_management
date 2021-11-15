@@ -1,0 +1,55 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block head_title %}
+{% block page_short_title %}
+{% block breadcrumb %}
+{{ page_short_title }}
+{% endblock %}
+{% endblock %}
+{% endblock %}
+{% block page_title %}
+{{ page_title }}
+{% endblock %}
+
+
+<!-- main content -->
+{% block content %}
+
+<div class="row">
+
+    {% if can_add_change == True %}
+
+    <div
+        class="{% if fields_count > 7 %}col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12{% else %}col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12{% endif %} align-items-center">
+        <!-- general form elements -->
+        <div class="card card-primary">
+            {% comment %}
+            <div class="card-header">
+                <h3 class="card-title">
+                    {{ page_title }}
+                </h3>
+            </div>
+            {% endcomment %}
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form role="form" method="POST" data-toggle="validator" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="card-body">
+                    {% include 'admin_panel/snippets/form.html' %}
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">
+                        Submit
+                    </button>
+                </div>
+            </form>
+        </div>
+        <!-- /.card -->
+    </div>
+
+    {% endif %}
+</div>
+
+{% endblock %}

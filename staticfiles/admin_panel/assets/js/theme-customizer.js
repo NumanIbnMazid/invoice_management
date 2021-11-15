@@ -12,7 +12,7 @@ $(function ($) {
                 // console.log("*** response: ", response, " ***")
             },
             error: function (response) {
-                console.log("*** error response: ", response, " ***")
+                console.log("*** error response: ", response.responseText, " ***")
             }
         })
     }
