@@ -1,0 +1,31 @@
+<div class="main-menu menu-fixed {{ dashboard_setting.get_menu_class }} menu-accordion menu-shadow" data-scroll-to-active="true">
+    <div class="navbar-header">
+        <ul class="nav navbar-nav flex-row">
+            <li class="nav-item mr-auto"><a class="navbar-brand" href="{% url 'dashboard' %}">
+                    <!-- <span class="brand-logo">
+                    </span> -->
+                    <h2 class="brand-text">{{ dashboard_setting.title }}</h2>
+                </a></li>
+            <li class="nav-item nav-toggle"><a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse"><i
+                        class="d-block d-xl-none text-primary toggle-icon font-medium-4" data-feather="x"></i><i
+                        class="d-none d-xl-block collapse-toggle-icon font-medium-4  text-primary" data-feather="disc"
+                        data-ticon="disc"></i></a></li>
+        </ul>
+    </div>
+    
+    <div class="shadow-bottom"></div>
+
+    <!-- BEGIN: Main-Menu-Content -->
+    <nav class="main-menu-content mt-2">
+        <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
+            <li class="nav-item">
+                <a class="d-flex align-items-center" href="{% url 'dashboard' %}">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span class="menu-title text-truncate" data-i18n="Dashboard">Dashboard</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <!-- END: Main-Menu-Content -->
+
+</div>

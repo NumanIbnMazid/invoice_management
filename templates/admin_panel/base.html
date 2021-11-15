@@ -1,0 +1,96 @@
+{% load static %}
+{% load custom_tags %}
+{% get_dashboard_setting as dashboard_setting %}
+
+<!DOCTYPE html>
+<html class="loading {{ dashboard_setting.skin }}" lang="en" data-layout="{{ dashboard_setting.skin }}"
+    data-textdirection="ltr">
+
+<!-- BEGIN: Head -->
+
+<head>
+    <!-- BEGIN: Meta-Tags -->
+    {% include "admin_panel/components/meta-tags.html" %}
+    <!-- END: Meta-Tags -->
+
+    <title>{% block head_title %}Titas Dashboard{% endblock %} | Titas Dashboard</title>
+
+    <!-- BEGIN: Styles -->
+    {% include "admin_panel/components/styles.html" %}
+    {% block additional_styles %}{% endblock %}
+    <!-- END: Styles -->
+
+</head>
+<!-- END: Head -->
+
+<!-- BEGIN: Body -->
+
+<body class="vertical-layout vertical-menu-modern {{ dashboard_setting.navbar_type }} {{ dashboard_setting.footer_type }}
+    {{ dashboard_setting.get_menu_collapsed }}" data-open="click" data-menu="vertical-menu-modern" data-col="">
+
+    <!-- BEGIN: Header -->
+    {% include "admin_panel/components/header.html" %}
+    <!-- END: Header -->
+
+
+    <!-- BEGIN: Left-Sidebar -->
+    {% include "admin_panel/components/left-sidebar.html" %}
+    <!-- END: Left-Sidebar -->
+
+    <!-- BEGIN: Content -->
+    <div class="app-content content ">
+        <div class="content-overlay"></div>
+        <div class="header-navbar-shadow"></div>
+        <div class="{{ dashboard_setting.get_layout_width }}">
+
+            <!-- BEGIN: Breadcrumb -->
+            {% if page_title %}
+            {% include "admin_panel/components/breadcrumb.html" with page_title=page_title %}
+            {% else %}
+            {% include "admin_panel/components/breadcrumb.html" with page_title="TITAS" %}
+            {% endif %}
+            <!-- END: Breadcrumb -->
+
+            <!-- BEGIN: Content-Body -->
+            <div class="content-body">
+                <!-- BEGIN: Content-Body -->
+                {% include 'admin_panel/snippets/messages.html' %}
+                <!-- END: Content-Body -->
+
+                {% block content %}
+                {% endblock %}
+            </div>
+            <!-- END: Content-Body -->
+
+        </div>
+    </div>
+    <!-- END: Content -->
+
+    <!-- BEGIN: Theme-Customizer -->
+    {% include "admin_panel/components/theme-customizer.html" %}
+    <!-- End: Theme-Customizer -->
+
+    <!-- BEGIN: Footer -->
+    {% include "admin_panel/components/footer.html" %}
+    <!-- END: Footer -->
+
+    <!-- BEGIN: UTILS -->
+    {% include "admin_panel/components/utils.html" %}
+    <!-- END: UTILS -->
+
+    <!-- ===============================================-->
+    <!--                  back to top                   -->
+    <!-- ===============================================-->
+    <a id="back-to-top" href="#" class="btn btn-md btn-titas-outline order-0 back-to-top" role="button">
+        <i class="fa fa-chevron-up"></i>
+    </a>
+
+    <!-- BEGIN: Scripts -->
+    {% include "admin_panel/components/scripts.html" %}
+    {% block additional_scripts %}{% endblock %}
+    <!-- END: Scripts -->
+
+</body>
+<!-- END: Body -->
+
+</html>

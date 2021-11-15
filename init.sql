@@ -1,0 +1,2 @@
+CREATE DATABASE titas ;
+CREATE USER titas WITH PASSWORD 'titassecret123';

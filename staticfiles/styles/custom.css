@@ -1,0 +1,50 @@
+
+/* ******* Scroll to top ******* */
+.back-to-top {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    display: none;
+}
+
+/* ******* Custom Padding ******* */
+.pb-0-i {
+    padding-bottom: 0px !important;
+}
+.pb-5-i {
+    padding-bottom: 5px !important;
+}
+.pb-10-i {
+    padding-bottom: 10px !important;
+}
+.pb-15-i {
+    padding-bottom: 15px !important;
+}
+.pb-20-i {
+    padding-bottom: 20px !important;
+}
+.pb-25-i {
+    padding-bottom: 25px !important;
+}
+.pb-30-i {
+    padding-bottom: 30px !important;
+}
+.pb-35-i {
+    padding-bottom: 35px !important;
+}
+.pb-40-i {
+    padding-bottom: 40px !important;
+}
+.pb-45-i {
+    padding-bottom: 45px !important;
+}
+.pb-50-i {
+    padding-bottom: 50px !important;
+}
+
+/* ******* Custom Form ******* */
+.custom-form input {
+    border-radius: 50rem !important;
+    padding-left: 1.5rem;
+    vertical-align: middle;
+}

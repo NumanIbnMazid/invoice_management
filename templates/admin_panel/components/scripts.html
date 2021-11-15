@@ -1,0 +1,37 @@
+{% load static %}
+
+<!-- BEGIN: Page Vendor JS-->
+<!-- END: Page Vendor JS-->
+
+<!-- BEGIN: Ajax Setup-->
+<script src="{% static 'admin_panel/assets/js/ajax-setup.js' %}"></script>
+<!-- END: Ajax Setup-->
+
+<!-- BEGIN: Theme JS-->
+<script src="{% static 'admin_panel/assets/js/app-menu.js' %}"></script>
+<script src="{% static 'admin_panel/assets/js/app.js' %}"></script>
+<script src="{% static 'admin_panel/assets/js/customizer.min.js' %}"></script>
+<script src="{% static 'admin_panel/assets/js/theme-customizer.js' %}"></script>
+<!-- END: Theme JS-->
+
+<!-- Sweet Alert -->
+<script src="{% static 'admin_panel/vendors/sweetalert/sweetalert.min.js' %}"></script>
+<!-- Bootstrap Validator -->
+<script src="{% static 'admin_panel/vendors/bootstrap-validator/validator.js' %}"></script>
+
+<!-- BEGIN: Custom JS-->
+<script src="{% static 'admin_panel/assets/js/scripts.js' %}"></script>
+<script src="{% static 'admin_panel/assets/js/custom.js' %}"></script>
+<script src="{% static 'scripts/custom.js' %}"></script>
+<!-- END: Custom JS-->
+
+<script>
+    $(window).on('load', function () {
+        if (feather) {
+            feather.replace({
+                width: 14,
+                height: 14
+            });
+        }
+    })
+</script>
