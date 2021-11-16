@@ -2,10 +2,16 @@ from django.db import models
 from utils.snippets import autoslugWithFieldAndUUID, autoslugFromUUID
 from service.models import Service
 from deals.models import Coupon, Vat
+from django.utils.translation import gettext_lazy as _
 
 
 @autoslugFromUUID()
 class Invoice(models.Model):
+    class Status(models.IntegerChoices):
+        CANCELLED = 0, _("Cancelled")
+        PAID = 1, _("Paid")
+        PENDING = 2, _("Pending")
+        
     service = models.ManyToManyField(Service, related_name="service_invoices")
     slug = models.SlugField(unique=True, max_length=254)
     coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE, related_name='coupon_invoices', null=True, blank=True)
@@ -34,6 +40,8 @@ class Invoice(models.Model):
     # calculated field
     total_cost = property(_get_total_cost)
     
+    status = models.PositiveSmallIntegerField(choices=Status.choices, default=Status.PENDING)
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -44,6 +52,14 @@ class Invoice(models.Model):
 
     def __str__(self):
         return ", ".join([service.name + f" ({service.price})" for service in self.service.all()])
+    
+    def get_status_str(self):
+        if self.status == 0:
+            return "Cancelled"
+        elif self.status == 1:
+            return "Paid"
+        else:
+            return "Pending"
 
     def get_fields(self):
         def get_dynamic_fields(field):
