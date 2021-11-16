@@ -19,3 +19,5 @@
 5. Coupon -> Select
 
 6. Show only active vat, coupon from form
+
+7. Invoice -> Select Company -> Select Services: from form
