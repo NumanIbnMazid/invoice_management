@@ -1,3 +1,13 @@
 from django.contrib import admin
+from utils.mixins import CustomModelAdminMixin
+from .models import Service
 
-# Register your models here.
+
+class ServiceAdmin(CustomModelAdminMixin, admin.ModelAdmin):
+    pass
+
+    class Meta:
+        model = Service
+
+
+admin.site.register(Service, ServiceAdmin)

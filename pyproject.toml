@@ -19,6 +19,7 @@ Pillow = "^8.4.0"
 autopep8 = "^1.6.0"
 django-ckeditor = "^6.1.0"
 django-widget-tweaks = "^1.4.9"
+django-allauth = "^0.46.0"
 
 [tool.poetry.dev-dependencies]
 

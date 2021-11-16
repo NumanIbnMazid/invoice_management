@@ -163,6 +163,15 @@
                                     {{ value|truncate_word:30|remove_html_tags }}
                                 </td>
 
+                                {% elif field_type in 'BooleanField' %}
+                                <td>
+                                    {% if value == True %}
+                                    <h3><i class="fas fa-check-circle text-success fw-bold"></i></h3>
+                                    {% else %}
+                                    <h3><i class="fas fa-times-circle text-danger fw-bold"></i></h3>
+                                    {% endif %}
+                                </td>
+
                                 {% else %}
 
                                 {% if value == None or value == "" %}

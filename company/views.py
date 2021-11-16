@@ -26,7 +26,7 @@ dashboard_decorators = [login_required, has_dashboard_permission_required]
 
 def get_company_common_contexts(request):
     common_contexts = get_simple_context_data(
-        request=request, app_namespace='company', model_namespace="company", model=Company, list_template=None, fields_to_hide_in_table=["id", "slug", "description"]
+        request=request, app_namespace='company', model_namespace="company", model=Company, list_template=None, fields_to_hide_in_table=["id", "slug", "description", "updated_at"]
     )
     return common_contexts
 

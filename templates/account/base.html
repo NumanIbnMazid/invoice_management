@@ -1,0 +1,67 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Auspicious">
+  <title>
+    {% block head_title %}Titas{% endblock %} | Titas
+  </title>
+  <!-- styles -->
+  {% include "admin_panel/components/styles.html" %}
+  {% block additional_css %}{% endblock %}
+</head>
+
+<body>
+
+
+  <!-- Main content -->
+  <div class="main-content" id="auth">
+
+    <nav class="navbar fixed-top navbar-expand-md custom-navbar navbar-dark">
+      <a class="navbar-brand" href="{% url 'home' %}">
+        <h1>Home</h1>
+      </a>
+      <button class="navbar-toggler navbar-toggler-right custom-toggler" type="button" data-toggle="collapse"
+        data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon "></span>
+      </button>
+    </nav>
+
+    <div class="d-flex align-items-center justify-content-center" style="height:100vh;">
+      <div class="container">
+
+        <div class="text-center m-2">
+          <h1 class="">
+            <span class="badge badge-secondary">
+              {% block page_title %}{% endblock %}
+            </span>
+          </h1>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-lg-8 col-md-10">
+
+            <!-- messages -->
+            {% include 'admin_panel/snippets/messages.html' %}
+
+            <div class="card border-0 mb-0 p-4">
+              {% block content %}{% endblock %}
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  {% include "admin_panel/components/scripts.html" %}
+  {% block additional_js %}{% endblock %}
+
+</body>
+
+</html>

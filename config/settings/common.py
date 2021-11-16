@@ -42,12 +42,18 @@ THIRD_PARTY_APPS = [
     # Django Ck Editor
     'ckeditor',
     'ckeditor_uploader',
+    # Django Allauth
+    'allauth',
+    'allauth.account',
 ]
 
 LOCAL_APPS = [
     "utils",
     "users",
     "company",
+    "service",
+    "deals",
+    "invoice",
 ]
 
 INSTALLED_APPS = [
@@ -65,6 +71,9 @@ INSTALLED_APPS = [
 
 """ *** Authentication Definitions *** """
 AUTH_USER_MODEL = 'users.User'
+AUTHENTICATION_BACKENDS = [
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 """ *** Middlewares Definitions *** """
 MIDDLEWARE = [
@@ -141,7 +150,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # ASGI_APPLICATION = "config.routing.application"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 HOME_URL = "/"
-ADMIN_LOGIN_URL = "/admin/login"
+ADMIN_LOGIN_URL = "/accounts/login"
 LOGIN_URL = ADMIN_LOGIN_URL
 SITE_DOMAIN="titas.com"
 

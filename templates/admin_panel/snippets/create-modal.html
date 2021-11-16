@@ -11,7 +11,7 @@
 {% endblock %}
 
 <!-- Create Form Modal -->
-<div class="modal fade bg-opacity-mid" id="modal-create-{{namespace}}" tabindex="-1" role="dialog" aria-hidden="true"
+<div class="modal fade bg-opacity-high" id="modal-create-{{namespace}}" tabindex="-1" role="dialog" aria-hidden="true"
     data-focus="false">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content bg-c-white-raw">
@@ -23,10 +23,12 @@
             </div>
             <div class="modal-body">
                 <form role="form" method="POST" enctype="multipart/form-data" data-toggle="validator">
+
                     {% csrf_token %}
                     <div class="card-body">
-                        {% include 'admin_panel/snippets/form.html' %}
+                        {% include 'snippets/forms/form-tag.html' %}
                     </div>
+                    
                 </form>
             </div>
         </div>

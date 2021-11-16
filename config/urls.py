@@ -9,18 +9,25 @@ from .dashboard_views import DashboardView
 
 
 THIRD_PARTY_URL_PATTERNS = [
-    # Third Party URL Patterns
-    path('', HomepageView.as_view(), name='home'),
+    # Django Allauth URLs
+    path('accounts/', include('allauth.urls')),
 ]
 
 END_USER_URL_PATTERNS = [
     # User panel URLs
+    path('', HomepageView.as_view(), name='home'),
 ]
 
 ADMIN_URL_PATTERNS = [
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
-    # ==============================*** UTILS URLS ***==============================
+    # ==============================*** Company URLS ***==============================
     path("company/", include(("company.urls", "company"), namespace="company")),
+    # ==============================*** Service URLS ***==============================
+    path("service/", include(("service.urls", "service"), namespace="service")),
+    # ==============================*** Deals URLS ***==============================
+    path("deals/", include(("deals.urls", "deals"), namespace="deals")),
+    # ==============================*** Invoice URLS ***==============================
+    path("invoice/", include(("invoice.urls", "invoice"), namespace="invoice")),
 ]
 
 urlpatterns = [

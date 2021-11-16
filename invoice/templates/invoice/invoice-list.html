@@ -1,0 +1,178 @@
+{% load static %}
+{% load custom_tags %}
+
+{% if can_view == True %}
+
+{% autoescape off %}
+
+<!-- Page content -->
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <!-- Card header -->
+            <div class="card-header border-0 text-center">
+                <h3 class="mb-0">
+                    {% if not display_name == None %}
+                    {{ display_name }} List
+                    {% else %}
+                    {{ namespace|to_title }} List
+                    {% endif %}
+                </h3>
+            </div>
+            <!-- Light table -->
+            <div class="table-responsive">
+                <table id="list-datatable" class="display table align-items-center table-flush table-hover"
+                    style="width:100%">
+                    <thead class="">
+                        <tr class="text-center">
+                            {% if not update_url == None or not detail_url == None or not delete_url == None %}
+                            <th>Action</th>
+                            {% endif %}
+                            <th>#</th>
+                            <th>service</th>
+                            <th>coupon</th>
+                            <th>vat</th>
+                            <th>additional charge</th>
+                            <th>total cost</th>
+                            <th>created at</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="list">
+
+                        <!-- table body -->
+                        {% for object in list_objects %}
+                        <tr class="text-center">
+
+                            {% if not update_url == None or not detail_url == None or not delete_url == None %}
+                            <th width="10">
+                                <button class="btn btn-secondary btn-sm" type="button" data-toggle="collapse"
+                                    data-target="#actionCollapse_{{forloop.counter}}" aria-expanded="false"
+                                    aria-controls="actionCollapse_{{forloop.counter}}">
+                                    Actions
+                                </button>
+                                <div class="collapse mt-2" id="actionCollapse_{{forloop.counter}}">
+                                    <!-- update url -->
+                                    {% if not update_url == None and can_change == True %}
+                                    {% if not object.slug == None %}
+                                    <a href="{% url update_url slug=object.slug %}"
+                                        class="btn btn-primary btn-sm text-deco-none mt-1">
+                                        <span class="">
+                                            <i class="fas fa-edit" aria-hidden="true"></i>
+                                        </span>
+                                    </a>
+                                    {% else %}
+                                    <a href="{% url update_url id=object.id %}"
+                                        class="btn btn-primary btn-sm text-deco-none mt-1">
+                                        <span class="">
+                                            <i class="fas fa-edit" aria-hidden="true"></i>
+                                        </span>
+                                    </a>
+                                    {% endif %}
+                                    {% endif %}
+
+                                    {% if not detail_url == None and can_view == True %}
+                                    {% if not object.slug == None %}
+                                    <a href="{% url detail_url slug=object.slug %}"
+                                        class="btn btn-info btn-sm text-deco-none mt-1">
+                                        <span class="">
+                                            <i class="fas fa-eye" aria-hidden="true"></i>
+                                        </span>
+                                    </a>
+                                    {% else %}
+                                    <a href="{% url detail_url id=object.id %}"
+                                        class="btn btn-info btn-sm text-deco-none mt-1">
+                                        <span class="">
+                                            <i class="fas fa-eye" aria-hidden="true"></i>
+                                        </span>
+                                    </a>
+                                    {% endif %}
+                                    {% endif %}
+
+                                    {% if not delete_url == None and can_delete == True %}
+                                    {% if not object.slug == None %}
+                                    <button type="button"
+                                        class="btn btn-danger btn-sm text-deco-none bg-c-danger mt-1 js_delete_{{namespace}}"
+                                        value="{{object.slug}}" data-toggle="modal"
+                                        data-target="#modal-delete-{{namespace}}">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                    {% else %}
+                                    <button type="button"
+                                        class="btn btn-danger btn-sm text-deco-none bg-c-danger mt-1 js_delete_{{namespace}}"
+                                        value="{{object.id}}" data-toggle="modal"
+                                        data-target="#modal-delete-{{namespace}}">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                    {% endif %}
+                                    {% endif %}
+                                </div>
+                            </th>
+                            {% endif %}
+
+                            <th>{{ forloop.counter }}</th>
+
+                            <td>{{ object }}</td>
+                            <td>
+                                {% if object.coupon %}
+                                {{ object.coupon }}: {{ object.coupon.discount_amount }}
+                                {% else %}
+                                ---
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if object.vat %}
+                                {{ object.vat.vat_percentage }}%
+                                {% else %}
+                                ---
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if object.additional_charge %}
+                                {{ object.additional_charge }}
+                                {% else %}
+                                ---
+                                {% endif %}
+                            </td>
+                            <td>{{ object.total_cost }}</td>
+                            <td>{{ object.created_at }}</td>
+
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="{{ fields_count }}" class="text-center">
+                                <div class="alert alert-info">
+                                    No item found!
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+
+                    <tfoot class="">
+                        <tr class="text-center">
+                            {% if not update_url == None or not detail_url == None or not delete_url == None %}
+                            <th>Action</th>
+                            {% endif %}
+                            <th>#</th>
+                            <th>service</th>
+                            <th>coupon</th>
+                            <th>vat</th>
+                            <th>additional charge</th>
+                            <th>total cost</th>
+                            <th>created at</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- Card footer -->
+            <!-- <div class="card-footer py-4 text-center">
+                </div> -->
+        </div>
+    </div>
+</div>
+
+{% endautoescape %}
+
+{% endif %}

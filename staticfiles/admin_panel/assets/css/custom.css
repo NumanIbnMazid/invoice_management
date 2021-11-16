@@ -122,6 +122,22 @@ select.form-control[multiple] {
     background-color: rgba(255, 255, 255, 0.6);
 }
 
+.bg-opacity-high-1 {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.bg-opacity-high-2 {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.bg-opacity-high-3 {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.bg-opacity-high-4 {
+    background-color: rgba(255, 255, 255, 1);
+}
+
 /* overflow */
 .overflow-xxl {
     max-height: 500px;
