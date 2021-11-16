@@ -8,7 +8,7 @@
 
 * Vat / Coupon
 
-1. Restrict to create vat only once
+1. Restrict to create vat only once (Restrict with filter within form)
 
 2. PDF generation
 
@@ -18,3 +18,4 @@
 
 5. Coupon -> Select
 
+6. Show only active vat, coupon from form
