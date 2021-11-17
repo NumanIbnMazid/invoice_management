@@ -70,6 +70,8 @@ class Invoice(models.Model):
                 return (field.name, str(self.coupon.discount_amount) + f" {self.coupon.currency}", field.get_internal_type())
             elif field.name == 'vat':
                 return (field.name, self.vat.vat_percentage, field.get_internal_type())
+            elif field.name == 'status':
+                return (field.name, self.get_status_str(), field.get_internal_type())
             else:
                 return (field.name, field.value_from_object(self), field.get_internal_type())
         return [get_dynamic_fields(field) for field in (self.__class__._meta.fields + self.__class__._meta.many_to_many)]

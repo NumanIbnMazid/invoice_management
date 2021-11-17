@@ -25,4 +25,3 @@
 8. not delete all invoices if deleted vat
 
 9. Currency
-
