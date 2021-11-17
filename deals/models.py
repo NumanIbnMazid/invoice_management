@@ -45,7 +45,7 @@ class Vat(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self):
-        return self.slug
+        return str(self.vat_percentage) + "%"
     
     def get_fields(self):
         def get_dynamic_fields(field):

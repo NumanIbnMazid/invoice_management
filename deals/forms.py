@@ -32,3 +32,10 @@ class VatManageForm(CustomModelForm):
         model = Vat
         fields = '__all__'
         exclude = ('slug', 'created_at', 'created_at')
+        
+    def clean(self):
+        form_data = self.cleaned_data
+        qs = Vat.objects.all()
+        if qs:
+            raise forms.ValidationError("Vat already exists! Please update the existing one.")
+        return form_data

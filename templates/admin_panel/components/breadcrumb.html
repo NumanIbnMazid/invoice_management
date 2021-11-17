@@ -1,15 +1,16 @@
+{% load custom_tags %}
 {% url 'dashboard' as dashboard_url %}
 
 <div class="content-header row">
     <div class="content-header-left col-md-9 col-12 mb-2">
         <div class="row breadcrumbs-top">
             <div class="col-12">
-                <h2 class="content-header-title float-left mb-0">{{ page_title }}</h2>
+                <h2 class="content-header-title float-left mb-0">{{ page_title|truncate_word:50 }}</h2>
                 <div class="breadcrumb-wrapper">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
                         {% if not request.path == dashboard_url %}
-                        <li class="breadcrumb-item active">{{ page_title }}</li>
+                        <li class="breadcrumb-item active">{{ page_title|truncate_word:50 }}</li>
                         {% endif %}
                     </ol>
                 </div>

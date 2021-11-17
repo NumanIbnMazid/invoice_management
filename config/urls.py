@@ -11,6 +11,8 @@ from .dashboard_views import DashboardView
 THIRD_PARTY_URL_PATTERNS = [
     # Django Allauth URLs
     path('accounts/', include('allauth.urls')),
+    # Django Select2
+    path("select2/", include("django_select2.urls")),
 ]
 
 END_USER_URL_PATTERNS = [

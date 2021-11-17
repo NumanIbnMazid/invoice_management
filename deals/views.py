@@ -116,8 +116,13 @@ def delete_coupon(request):
 
 
 def get_vat_common_contexts(request):
+    # Hide Create Option if vat already exists
+    extra_kwargs = {}
+    if len(Vat.objects.all()) >= 1:
+        extra_kwargs["create_url"] = None
+        
     common_contexts = get_simple_context_data(
-        request=request, app_namespace='deals', model_namespace="vat", model=Vat, list_template=None, fields_to_hide_in_table=["id", "slug", "updated_at"]
+        request=request, app_namespace='deals', model_namespace="vat", model=Vat, list_template=None, fields_to_hide_in_table=["id", "slug", "updated_at"], **extra_kwargs
     )
     return common_contexts
 
@@ -144,6 +149,7 @@ class VatCreateView(CreateView):
         context['page_short_title'] = 'Create Vat'
         for key, value in get_vat_common_contexts(request=self.request).items():
             context[key] = value
+        
         return context
 
 

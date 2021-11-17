@@ -10,6 +10,8 @@
 <link rel="stylesheet" type="text/css" href="{% static 'vendors/jquery-datatable/dataTables.bootstrap4.min.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'vendors/jquery-datatable/buttons.dataTables.min.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'vendors/jquery-datatable/datatable-custom.css' %}" />
+<!-- Form Media CSS -->
+{{ form.media.css }}
 <!-- CKEDITOR JS -->
 <script>
     window.CKEDITOR_BASEPATH = '/static/ckeditor/ckeditor/';
@@ -46,6 +48,7 @@
         {% endif %}
 
         <div class="d-flex">
+            {% if not create_url == None and can_add_change == True %}
             <div class="">
                 <!-- Create Button trigger modal -->
                 <button type="button" class="btn btn-md text-deco-none btn btn-outline-primary js_create_{{namespace}}"
@@ -53,6 +56,7 @@
                     + {{ page_title }}
                 </button>
             </div>
+            {% endif %}
             {% if not list_url == None or not create_url == None or not update_url == None or not delete_url == None %}
             <div class="ml-2">
 
@@ -182,5 +186,17 @@
 </script>
 {% endif %}
 {% endcomment %}
+
+<!-- Form Media JS -->
+{{ form.media.js }}
+
+
+<!-- Select2 Customization -->
+<script>
+    $(document).ready(function () {
+        $(".select2-selection__arrow").html("<i class='fas fa-caret-square-down'></i>");
+        $(".select2-selection__clear").html("<i class='fas fa-times'></i>");
+    });
+</script>
 
 {% endblock %}

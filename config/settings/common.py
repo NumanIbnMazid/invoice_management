@@ -45,6 +45,8 @@ THIRD_PARTY_APPS = [
     # Django Allauth
     'allauth',
     'allauth.account',
+    # Django Select2
+    "django_select2",
 ]
 
 LOCAL_APPS = [

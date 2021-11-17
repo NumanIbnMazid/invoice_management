@@ -138,11 +138,11 @@
                             <td>{{ object.total_cost }}</td>
                             <td>
                                 {% if object.status == 0 %}
-                                <i class="fas fa-window-close text-danger fw-bold"></i>
+                                <i class="fas fa-times-circle text-danger fw-bold"></i>
                                 {% elif object.status == 1 %}
                                 <i class="fas fa-check-circle text-success fw-bold"></i>
                                 {% else %}
-                                <i class="fas fa-sync text-warning fw-bold"></i>
+                                <i class="fas fa-sync-alt text-warning fw-bold"></i>
                                 {% endif %}
 
                                 {{ object.get_status_str }}

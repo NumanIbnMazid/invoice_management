@@ -21,3 +21,8 @@
 6. Show only active vat, coupon from form
 
 7. Invoice -> Select Company -> Select Services: from form
+
+8. not delete all invoices if deleted vat
+
+9. Currency
+

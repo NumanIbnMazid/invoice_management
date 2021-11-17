@@ -16,7 +16,7 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = "username"
 
 
 """
------------------------ * Django Memcache Configurations * -----------------------
+----------------------- * Django Memcache and Redis Cache Configurations * -----------------------
 """
 
 SESSIONS_ENGINE = 'django.contrib.sessions.backends.cache'
@@ -25,6 +25,13 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
         'LOCATION': '127.0.0.1:11211',
+    },
+    "select2": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/2",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
     }
 }
 
@@ -132,3 +139,10 @@ MAX_UPLOAD_SIZE = 2621440
 
 # File Validation Staffs
 ALLOWED_JOB_APPLY_FILE_TYPES = ['.doc', '.docx', '.pdf']
+
+
+"""
+----------------------- * Select2 Configuration * -----------------------
+"""
+
+SELECT2_CACHE_BACKEND = "select2"

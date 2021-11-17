@@ -11,9 +11,12 @@ from utils.helpers import (
 # App Imports
 from .forms import InvoiceManageForm
 from .models import Invoice
+from company.models import Company
+from service.models import Service
 
 
 dashboard_decorators = [login_required, has_dashboard_permission_required]
+
 
 
 """ 
@@ -80,6 +83,13 @@ class InvoiceUpdateView(UpdateView):
 
     def get_object(self):
         return get_simple_object(key="slug", model=Invoice, self=self)
+    
+    def get_form_kwargs(self):
+        kwargs = super(InvoiceUpdateView, self).get_form_kwargs()
+        if self.form_class:
+            kwargs.update({'request': self.request})
+            kwargs.update({'object': self.get_object()})
+        return kwargs
 
     def get_success_url(self):
         return reverse("invoice:create_invoice")

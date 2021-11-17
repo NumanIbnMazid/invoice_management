@@ -14,8 +14,8 @@ class Invoice(models.Model):
         
     service = models.ManyToManyField(Service, related_name="service_invoices")
     slug = models.SlugField(unique=True, max_length=254)
-    coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE, related_name='coupon_invoices', null=True, blank=True)
-    vat = models.ForeignKey(Vat, on_delete=models.CASCADE, related_name='vat_invoices', blank=True, null=True)
+    coupon = models.ForeignKey(Coupon, on_delete=models.SET_NULL, related_name='coupon_invoices', null=True, blank=True)
+    vat = models.ForeignKey(Vat, on_delete=models.SET_NULL, related_name='vat_invoices', blank=True, null=True)
     additional_charge = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
     def _get_total_cost(self):
