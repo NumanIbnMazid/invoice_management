@@ -156,7 +156,7 @@ def delete_simple_object(request, key, model, redirect_url):
 """
 
 
-def get_simple_context_data(request=None, app_namespace=None, model_namespace=None, display_name=None, model=None, list_template=None, fields_to_hide_in_table=[], **kwargs):
+def get_simple_context_data(request=None, app_namespace=None, model_namespace=None, display_name=None, model=None, list_template=None, fields_to_hide_in_table=[], validate_permissions=False, **kwargs):
     """
     params: request, app_namespace (string), model_namespace (string), model (class), fields_to_hide_in_table (list), **kwargs
 
@@ -209,6 +209,14 @@ def get_simple_context_data(request=None, app_namespace=None, model_namespace=No
     permission_namespace = get_permission_namespace(model_namespace)
 
     common_contexts = {}
+    
+    if not validate_permissions:
+        common_contexts["can_add_change"] = True
+        common_contexts["can_add"] = True
+        common_contexts["can_change"] = True
+        common_contexts["can_view"] = True
+        common_contexts["can_delete"] = True
+        
     if not app_namespace == None:
         # URL Binding
         common_contexts["create_url"] = f"{app_namespace}:create_{model_namespace}"
@@ -217,16 +225,17 @@ def get_simple_context_data(request=None, app_namespace=None, model_namespace=No
         common_contexts["delete_url"] = f"{app_namespace}:delete_{model_namespace}"
         common_contexts["list_url"] = f"{app_namespace}:create_{model_namespace}"
         # Permission Binding
-        common_contexts["can_add_change"] = True if request.user.has_perm(
-            f'{app_namespace}.add_{permission_namespace}') or request.user.has_perm(f'{app_namespace}.change_{permission_namespace}') else False
-        common_contexts["can_add"] = request.user.has_perm(
-            f'{app_namespace}.add_{permission_namespace}')
-        common_contexts["can_change"] = request.user.has_perm(
-            f'{app_namespace}.change_{permission_namespace}')
-        common_contexts["can_view"] = request.user.has_perm(
-            f'{app_namespace}.view_{permission_namespace}')
-        common_contexts["can_delete"] = request.user.has_perm(
-            f'{app_namespace}.delete_{permission_namespace}')
+        if validate_permissions:
+            common_contexts["can_add_change"] = True if request.user.has_perm(
+                f'{app_namespace}.add_{permission_namespace}') or request.user.has_perm(f'{app_namespace}.change_{permission_namespace}') else False
+            common_contexts["can_add"] = request.user.has_perm(
+                f'{app_namespace}.add_{permission_namespace}')
+            common_contexts["can_change"] = request.user.has_perm(
+                f'{app_namespace}.change_{permission_namespace}')
+            common_contexts["can_view"] = request.user.has_perm(
+                f'{app_namespace}.view_{permission_namespace}')
+            common_contexts["can_delete"] = request.user.has_perm(
+                f'{app_namespace}.delete_{permission_namespace}')
     else:
         # URL Binding
         common_contexts["create_url"] = f"create_{model_namespace}"
@@ -235,25 +244,32 @@ def get_simple_context_data(request=None, app_namespace=None, model_namespace=No
         common_contexts["delete_url"] = f"delete_{model_namespace}"
         common_contexts["list_url"] = f"create_{model_namespace}"
         # Permission Binding
-        common_contexts["can_add_change"] = True if request.user.has_perm(
-            'add_{permission_namespace}') or request.user.has_perm('change_{permission_namespace}') else False
-        common_contexts["can_add"] = request.user.has_perm(
-            'add_{permission_namespace}')
-        common_contexts["can_change"] = request.user.has_perm(
-            'change_{permission_namespace}')
-        common_contexts["can_view"] = request.user.has_perm(
-            'view_{permission_namespace}')
-        common_contexts["can_delete"] = request.user.has_perm(
-            'delete_{permission_namespace}')
+        if validate_permissions:
+            common_contexts["can_add_change"] = True if request.user.has_perm(
+                'add_{permission_namespace}') or request.user.has_perm('change_{permission_namespace}') else False
+            common_contexts["can_add"] = request.user.has_perm(
+                'add_{permission_namespace}')
+            common_contexts["can_change"] = request.user.has_perm(
+                'change_{permission_namespace}')
+            common_contexts["can_view"] = request.user.has_perm(
+                'view_{permission_namespace}')
+            common_contexts["can_delete"] = request.user.has_perm(
+                'delete_{permission_namespace}')
 
     common_contexts["namespace"] = model_namespace
     common_contexts["display_name"] = display_name
     common_contexts["list_objects"] = model.objects.all().order_by('-id')
     if not list_template == None:
         common_contexts["list_template"] = list_template
-    common_contexts["fields_count"] = len(model._meta.get_fields()) + 0
-    common_contexts["fields"] = dict([(f.name, f.verbose_name)
-                                      for f in model._meta.fields + model._meta.many_to_many])
+    
+    # models fields
+    MODEL_FIELDS = model._meta.fields
+    MODEL_MANY_TO_FIELDS = model._meta.many_to_many
+    
+    common_contexts["fields_count"] = len(MODEL_FIELDS)
+    common_contexts["fields"] = dict(
+        [(f.name, f.verbose_name) for f in MODEL_FIELDS + MODEL_MANY_TO_FIELDS]
+    )
     if not fields_to_hide_in_table == None:
         common_contexts["fields_to_hide_in_table"] = fields_to_hide_in_table
 
