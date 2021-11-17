@@ -1,6 +1,7 @@
 from django.db import models
 from utils.snippets import autoslugWithFieldAndUUID
 from company.models import Company
+from utils.choices import Currency
 
 
 @autoslugWithFieldAndUUID(fieldname="name")
@@ -9,6 +10,7 @@ class Service(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True, max_length=254)
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    currency = models.CharField(max_length=10, choices=Currency.choices, default=Currency.BDT)
     registration_date = models.DateField()
     due_date = models.DateField()
     is_active = models.BooleanField(default=True)
@@ -21,12 +23,14 @@ class Service(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self):
-        return self.name
+        return self.name + f" ({str(self.price)} {self.currency})"
     
     def get_fields(self):
         def get_dynamic_fields(field):
             if field.name == 'company':
                 return (field.name, self.company.name, field.get_internal_type())
+            if field.name == 'price':
+                return (field.name, str(self.price) + f" {self.currency}", field.get_internal_type())
             else:
                 return (field.name, field.value_from_object(self), field.get_internal_type())
         return [get_dynamic_fields(field) for field in self.__class__._meta.fields]

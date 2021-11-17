@@ -25,7 +25,7 @@ dashboard_decorators = [login_required, has_dashboard_permission_required]
 
 def get_coupon_common_contexts(request):
     common_contexts = get_simple_context_data(
-        request=request, app_namespace='deals', model_namespace="coupon", model=Coupon, list_template=None, fields_to_hide_in_table=["id", "slug", "updated_at"]
+        request=request, app_namespace='deals', model_namespace="coupon", model=Coupon, list_template=None, fields_to_hide_in_table=["id", "slug", "currency", "updated_at"]
     )
     return common_contexts
 

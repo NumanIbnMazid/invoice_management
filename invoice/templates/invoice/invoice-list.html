@@ -116,7 +116,7 @@
                             <td>{{ object }}</td>
                             <td>
                                 {% if object.coupon %}
-                                {{ object.coupon }}: {{ object.coupon.discount_amount }}
+                                {{ object.coupon }}
                                 {% else %}
                                 ---
                                 {% endif %}
@@ -130,12 +130,14 @@
                             </td>
                             <td>
                                 {% if object.additional_charge %}
-                                {{ object.additional_charge }}
+                                {{ object.additional_charge }} {{ object.get_currency }}
                                 {% else %}
                                 ---
                                 {% endif %}
                             </td>
-                            <td>{{ object.total_cost }}</td>
+                            <td>
+                                {{ object.total_cost }} {{ object.get_currency }}
+                            </td>
                             <td>
                                 {% if object.status == 0 %}
                                 <i class="fas fa-times-circle text-danger fw-bold"></i>
