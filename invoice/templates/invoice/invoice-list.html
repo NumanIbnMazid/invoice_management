@@ -29,6 +29,7 @@
                             <th>Action</th>
                             {% endif %}
                             <th>#</th>
+                            <th>company</th>
                             <th>service</th>
                             <th>coupon</th>
                             <th>vat</th>
@@ -113,6 +114,7 @@
 
                             <th>{{ forloop.counter }}</th>
 
+                            <td>{{ object.get_company }}</td>
                             <td>{{ object }}</td>
                             <td>
                                 {% if object.coupon %}
@@ -170,6 +172,7 @@
                             <th>Action</th>
                             {% endif %}
                             <th>#</th>
+                            <th>company</th>
                             <th>service</th>
                             <th>coupon</th>
                             <th>vat</th>

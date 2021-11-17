@@ -60,13 +60,7 @@ class InvoiceManageForm(CustomModelForm):
         required=False,
         initial=Vat.objects.filter(is_active=True).last(),
         label=u"Vat",
-        empty_label="Select Vat...",
-        widget=ModelSelect2Widget(
-            model=Vat,
-            search_fields=['vat_percentage__icontains'],
-            max_results=500,
-            attrs={'data-minimum-input-length': '0'}
-        )
+        empty_label="Select Vat..."
     )
     
     class Meta:
@@ -74,6 +68,14 @@ class InvoiceManageForm(CustomModelForm):
         fields = ("company", "service", "coupon", "vat", "additional_charge", "status")
         exclude = ('slug', 'total_cost', 'created_at', 'created_at')
         
+
+    def clean_company(self):
+        company = self.cleaned_data.get('company')
+
+        if not company:
+            raise forms.ValidationError("Company is required!!")
+
+        return company
 
     def clean_service(self):
         service = self.cleaned_data.get('service')

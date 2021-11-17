@@ -80,3 +80,8 @@ class Invoice(models.Model):
         if self.service:
             return self.service.all()[0].currency
         return "Undefined"
+    
+    def get_company(self):
+        if self.service:
+            return self.service.all()[0].company.name
+        return "Undefined"
