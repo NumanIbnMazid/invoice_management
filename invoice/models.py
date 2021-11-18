@@ -67,9 +67,9 @@ class Invoice(models.Model):
             if field.name == 'service':
                 return (field.name, self.__str__(), field.get_internal_type())
             elif field.name == 'coupon':
-                return (field.name, str(self.coupon.discount_amount) + f" {self.coupon.currency}", field.get_internal_type())
+                return (field.name, str(self.coupon.discount_amount) + f" {self.coupon.currency}" if self.coupon else "--", field.get_internal_type())
             elif field.name == 'vat':
-                return (field.name, self.vat.vat_percentage, field.get_internal_type())
+                return (field.name, self.vat.vat_percentage if self.vat else "--", field.get_internal_type())
             elif field.name == 'status':
                 return (field.name, self.get_status_str(), field.get_internal_type())
             else:
@@ -80,6 +80,23 @@ class Invoice(models.Model):
         if self.service:
             return self.service.all()[0].currency
         return "Undefined"
+    
+    def get_service_sub_total(self):
+        total = 0
+        for service in self.service.all():
+            total += service.price
+        return round(total, 2)
+    
+    def get_vat_amount(self):
+        if self.vat:
+            total = self.get_service_sub_total() * (self.vat.vat_percentage / 100)
+            return round(total, 2)
+        return 0
+    
+    def get_subtotal_without_coupon(self):
+        total = 0
+        total += self.get_service_sub_total() + self.get_vat_amount() + self.additional_charge
+        return round(total, 2)
     
     def get_company(self):
         if self.service:

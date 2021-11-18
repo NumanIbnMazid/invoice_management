@@ -1,0 +1,164 @@
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="mb-2">
+                <h1 class="font-30 font-bold c-text-primary">TITAS</h1>
+            </div>
+            <h4><b>INVOICE</b> <span class="pull-right">#{{ object.id }}</span></h4>
+        </div>
+
+        <div class="col-sm-6 text-lg-center">
+            <h3 class="m-0">
+                <b class="text-success">{{ object.get_status_str }}</b>
+            </h3>
+
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="pull-left">
+                <address>
+                    <h4><b>Invoice To</b></h4>
+                    <p>
+                        <h5>{{ object.get_company }}</h5>
+                        Email: {{ object.service.first.company.user.email }} <br>
+                        {% if object.service.first.company.address %}
+                        Address: {{ object.service.first.company.address }} <br>
+                        {% endif %}
+                        {% if object.service.first.company.contact %}
+                        Contact: {{ object.service.first.company.contact }}
+                        {% endif %}
+                    </p>
+                    <p><b>Invoice Date :</b> {{ object.created_at|date:'Y/m/d' }}</p>
+                </address>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="pull-right text-lg-right">
+                <address>
+                    <h4><b>Pay To</b>&nbsp;</h4>
+                    <p>
+                        <h5>
+                            {% if company_information.name %}
+                            {{ company_information.name }}
+                            {% else %}
+                            Example Company
+                            {% endif %}
+                        </h5>
+                        {% if company_information.email %}
+                        Email: {{ company_information.email }} <br>
+                        {% endif %}
+                        {% if company_information.address %}
+                        Address: {{ company_information.address }} <br>
+                        {% endif %}
+                        {% if company_information.contact %}
+                        Contact: {{ company_information.contact }}
+                        {% endif %}
+                    </p>
+                </address>
+            </div>
+        </div>
+
+
+        <div class="col-md-12">
+            <div class="table-responsive m-t-40" style="clear: both;">
+                <h4><b>Invoice Items</b></h4>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Description</th>
+                            <th class="text-right">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for service in object.service.all %}
+                        <tr>
+                            <th>{{ forloop.counter }}</th>
+                            <td>
+                                {{ service.name }} ({{ service.registration_date|date:'Y/m/d' }} -
+                                {{ service.due_date|date:'Y/m/d' }})<br>
+                            </td>
+                            <td class="text-right">
+                                {{ service.price }} {{ service.currency }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <td></td>
+                            <td class="text-right" width="80%">
+                                <b>Sub-Total:</b>
+                            </td>
+                            <td class="text-right">
+                                {{  object.get_service_sub_total }} {{ object.get_currency }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="text-right" width="80%">
+                                <b>
+                                    Vat{% if object.vat %} ({{ object.vat.vat_percentage }}%){% endif %}:
+                                </b>
+                            </td>
+                            <td class="text-right">
+                                + {{  object.get_vat_amount }} {{ object.get_currency }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="border-none"></td>
+                            <td class="text-right border-none" width="80%">
+                                <b>Additional Charge:</b>
+                            </td>
+                            <td class="text-right border-none">
+                                + {{  object.additional_charge }} {{ object.get_currency }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="text-right" width="80%">
+                                <b>Total:</b>
+                            </td>
+                            <td class="text-right">
+                                {{  object.get_subtotal_without_coupon }} {{ object.get_currency }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="text-right" width="80%">
+                                <b>Coupon{% if object.coupon %} ({{object.coupon.code}}){% endif %}:</b>
+                            </td>
+                            <td class="text-right">
+                                - {{  object.coupon.discount_amount }} {{ object.coupon.currency }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="text-right" width="80%">
+                                <i><b class="font-17">Grand Total:</b></i>
+                            </td>
+                            <td class="text-right">
+                                {{  object.total_cost }} {{ object.get_currency }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <a href="https://my.exonhost.com/dashboard">
+                <span><i class="fa fa-arrow-circle-left"></i> Back to Dashboard</span>
+            </a>
+
+            <a href="https://my.exonhost.com/login/old-portal?download_pdf=82428" style="margin-left: 15px">
+                <span><i class="fa fa-arrow-circle-down"></i> Download PDF</span>
+            </a>
+        </div>
+    </div>
+
+</div>

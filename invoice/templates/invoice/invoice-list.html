@@ -73,24 +73,6 @@
                                     {% endif %}
                                     {% endif %}
 
-                                    {% if not detail_url == None and can_view == True %}
-                                    {% if not object.slug == None %}
-                                    <a href="{% url detail_url slug=object.slug %}"
-                                        class="btn btn-info btn-sm text-deco-none mt-1">
-                                        <span class="">
-                                            <i class="fas fa-eye" aria-hidden="true"></i>
-                                        </span>
-                                    </a>
-                                    {% else %}
-                                    <a href="{% url detail_url id=object.id %}"
-                                        class="btn btn-info btn-sm text-deco-none mt-1">
-                                        <span class="">
-                                            <i class="fas fa-eye" aria-hidden="true"></i>
-                                        </span>
-                                    </a>
-                                    {% endif %}
-                                    {% endif %}
-
                                     {% if not delete_url == None and can_delete == True %}
                                     {% if not object.slug == None %}
                                     <button type="button"
@@ -109,6 +91,14 @@
                                     {% endif %}
                                     {% endif %}
                                 </div>
+
+                                <!-- invoice view button -->
+                                <a href="{% url detail_url slug=object.slug %}"
+                                    class="btn btn-primary btn-sm m-1 text-deco-none">
+                                    <span class="">
+                                        <i class="fas fa-eye" aria-hidden="true"></i>
+                                    </span>
+                                </a>
                             </th>
                             {% endif %}
 

@@ -29,9 +29,10 @@ class CompanyCreateForm(CustomModelForm):
     
     class Meta:
         model = Company
-        fields = ['name', 'logo', 'registration_date', 'is_active', 'description']
+        fields = ['name', 'logo', 'registration_date', 'address', 'contact', 'is_active', 'description']
         widgets = {
             # 'description': CKEditorWidget(),
+            'address': forms.Textarea(attrs={'rows': 3, 'cols': 2}),
             'description': forms.Textarea(attrs={'rows': 3, 'cols': 2}),
             'registration_date': DateInput(),
         }
@@ -70,9 +71,10 @@ class CompanyManageForm(CustomModelForm):
     
     class Meta:
         model = Company
-        fields = ['name', 'logo', 'registration_date', 'is_active', 'description']
+        fields = ['name', 'logo', 'registration_date', 'address', 'contact', 'is_active', 'description']
         widgets = {
             # 'description': CKEditorWidget(),
+            'address': forms.Textarea(attrs={'rows': 3, 'cols': 2}),
             'description': forms.Textarea(attrs={'rows': 3, 'cols': 2}),
             'registration_date': DateInput(),
         }

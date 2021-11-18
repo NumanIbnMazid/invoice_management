@@ -6,6 +6,11 @@ from urllib.parse import urlparse
 from django.db import models
 from django.dispatch import receiver
 import uuid
+# PDF imports
+from io import BytesIO
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
 
 
 def random_string_generator(size=4, chars=string.ascii_lowercase + string.digits):
@@ -244,3 +249,22 @@ def generate_unique_username_from_email(instance):
         generate_unique_username_from_email(instance=instance)
 
     return generated_username
+
+
+def render_to_pdf(template_src, context_dict={}):
+    """[summary]
+
+    Args:
+        template_src ([str]): [path of html file to render]
+        context_dict (dict, optional): [additional contexts]. Defaults to {}.
+
+    Returns:
+        [HttpResponse/None]: [Django HttpResponse object or None]
+    """
+    template = get_template(template_src)
+    html = template.render(context_dict)
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return None

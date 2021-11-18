@@ -159,6 +159,5 @@ SITE_DOMAIN="titas.com"
 # Crispy Form Configuraton
 CRISPY_FAIL_SILENTLY = not DEBUG
 
-
 """ # Project Third Party Packages Configurations # """
 from config.settings.third_party_configs import *

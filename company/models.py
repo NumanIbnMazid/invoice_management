@@ -11,6 +11,8 @@ class Company(models.Model):
     slug = models.SlugField(unique=True, max_length=254)
     logo = models.ImageField(upload_to=upload_company_logo_image_path, null=True, blank=True)
     registration_date = models.DateField()
+    address = models.TextField(blank=True, null=True)
+    contact = models.CharField(max_length=23, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

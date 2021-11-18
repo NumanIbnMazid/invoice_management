@@ -22,6 +22,7 @@ django-widget-tweaks = "^1.4.9"
 django-allauth = "^0.46.0"
 django-select2 = "^7.9.0"
 django-redis = "^5.0.0"
+xhtml2pdf = "^0.2.5"
 
 [tool.poetry.dev-dependencies]
 

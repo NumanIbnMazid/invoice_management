@@ -8,6 +8,13 @@ from django.contrib import messages
 from utils.helpers import (
     validate_normal_form, get_simple_context_data, get_simple_object, delete_simple_object, user_has_permission
 )
+from django.conf import settings
+import json
+import os
+# PDF imports
+from django.http import HttpResponse
+from django.views.generic import View
+from utils.snippets import render_to_pdf
 # App Imports
 from .forms import InvoiceManageForm
 from .models import Invoice
@@ -27,8 +34,16 @@ dashboard_decorators = [login_required, has_dashboard_permission_required]
 
 
 def get_invoice_common_contexts(request):
+    extra_kwargs = {}
+    STATIC_DATA_FILE = os.path.join(settings.BASE_DIR, 'utils/staticData.json')
+    # Opening JSON file
+    data_file = open(STATIC_DATA_FILE,)
+    data = json.load(data_file)
+    comapny_information = data.get("CompanyInformation", {})
+    extra_kwargs.update({"company_information": comapny_information})
+    
     common_contexts = get_simple_context_data(
-        request=request, app_namespace='invoice', model_namespace="invoice", model=Invoice, list_template="invoice/invoice-list.html", fields_to_hide_in_table=["id", "slug", "updated_at"]
+        request=request, app_namespace='invoice', model_namespace="invoice", model=Invoice, list_template="invoice/invoice-list.html", fields_to_hide_in_table=["id", "slug", "updated_at"], **extra_kwargs
     )
     return common_contexts
 
@@ -60,7 +75,7 @@ class InvoiceCreateView(CreateView):
 
 @method_decorator(dashboard_decorators, name='dispatch')
 class InvoiceDetailView(DetailView):
-    template_name = "admin_panel/snippets/detail-common.html"
+    template_name = "invoice/invoice-detail.html"
 
     def get_object(self):
         return get_simple_object(key='slug', model=Invoice, self=self)
@@ -116,3 +131,45 @@ class InvoiceUpdateView(UpdateView):
 @login_required
 def delete_invoice(request):
     return delete_simple_object(request=request, key='slug', model=Invoice, redirect_url="invoice:create_invoice")
+
+
+class GeneratePdf(View):
+    def get(self, request, *args, **kwargs):
+        # Object
+        self.object = get_simple_object(key="slug", model=Invoice, self=self)
+        # Company Information
+        STATIC_DATA_FILE = os.path.join(settings.BASE_DIR, 'utils/staticData.json')
+        # Opening JSON file
+        data_file = open(STATIC_DATA_FILE,)
+        data = json.load(data_file)
+        comapny_information = data.get("CompanyInformation", {})
+        # prepare context
+        context = {
+            "object": self.object,
+            "company_information": comapny_information
+        }
+        pdf = render_to_pdf('invoice/snippets/invoice-preview.html', context)
+        return HttpResponse(pdf, content_type='application/pdf')
+
+
+# class GeneratePDF(View):
+#     def get(self, request, *args, **kwargs):
+#         template = get_template('invoice.html')
+#         context = {
+#             "invoice_id": 123,
+#             "customer_name": "John Cooper",
+#             "amount": 1399.99,
+#             "today": "Today",
+#         }
+#         html = template.render(context)
+#         pdf = render_to_pdf('invoice.html', context)
+#         if pdf:
+#             response = HttpResponse(pdf, content_type='application/pdf')
+#             filename = "Invoice_%s.pdf" % ("12341231")
+#             content = "inline; filename='%s'" % (filename)
+#             download = request.GET.get("download")
+#             if download:
+#                 content = "attachment; filename='%s'" % (filename)
+#             response['Content-Disposition'] = content
+#             return response
+#         return HttpResponse("Not found")

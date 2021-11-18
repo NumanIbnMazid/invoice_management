@@ -1,4 +1,18 @@
 [[package]]
+name = "arabic-reshaper"
+version = "2.1.3"
+description = "Reconstruct Arabic sentences to be used in applications that don't support Arabic"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+future = "*"
+
+[package.extras]
+with-fonttools = ["fonttools (>=3.0)", "fonttools (>=4.0)"]
+
+[[package]]
 name = "asgiref"
 version = "3.4.1"
 description = "ASGI specs, helper code, and adapters"
@@ -218,6 +232,32 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "future"
+version = "0.18.2"
+description = "Clean single-source support for Python 3 and 2"
+category = "main"
+optional = false
+python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
+
+[[package]]
+name = "html5lib"
+version = "1.1"
+description = "HTML parser based on the WHATWG HTML specification"
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+
+[package.dependencies]
+six = ">=1.9"
+webencodings = "*"
+
+[package.extras]
+all = ["genshi", "chardet (>=2.2)", "lxml"]
+chardet = ["chardet (>=2.2)"]
+genshi = ["genshi"]
+lxml = ["lxml"]
+
+[[package]]
 name = "idna"
 version = "3.3"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -288,6 +328,25 @@ docs = ["sphinx", "sphinx-rtd-theme", "zope.interface"]
 tests = ["pytest (>=6.0.0,<7.0.0)", "coverage[toml] (==5.0.4)"]
 
 [[package]]
+name = "pypdf2"
+version = "1.26.0"
+description = "PDF toolkit"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
+name = "python-bidi"
+version = "0.4.2"
+description = "Pure python implementation of the BiDi layout algorithm"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+six = "*"
+
+[[package]]
 name = "python-dotenv"
 version = "0.19.2"
 description = "Read key-value pairs from a .env file and set them as environment variables"
@@ -345,6 +404,20 @@ deprecated = "*"
 
 [package.extras]
 hiredis = ["hiredis (>=1.0.0)"]
+
+[[package]]
+name = "reportlab"
+version = "3.6.2"
+description = "The Reportlab Toolkit"
+category = "main"
+optional = false
+python-versions = ">=3.6, <4"
+
+[package.dependencies]
+pillow = ">=4.0.0"
+
+[package.extras]
+rlpycairo = ["rlPyCairo (>=0.0.5)"]
 
 [[package]]
 name = "requests"
@@ -417,6 +490,14 @@ secure = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "cer
 socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
+name = "webencodings"
+version = "0.5.1"
+description = "Character encoding aliases for legacy web content"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "whitenoise"
 version = "5.3.0"
 description = "Radically simplified static file serving for WSGI applications"
@@ -435,12 +516,34 @@ category = "main"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 
+[[package]]
+name = "xhtml2pdf"
+version = "0.2.5"
+description = "PDF generator using HTML and CSS"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+arabic-reshaper = ">=2.1.0"
+html5lib = ">=1.0"
+Pillow = "*"
+pyPdf2 = "*"
+python-bidi = ">=0.4.2"
+reportlab = ">=3.3.0"
+six = "*"
+
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "455a81747609201b307993139d95468a4cead677645873a6aa8a9dd26ae0f57f"
+content-hash = "87d993f64bd75b7c84022467341d7542b031d5db2d956ae4d49d555948b765f3"
 
 [metadata.files]
+arabic-reshaper = [
+    {file = "arabic_reshaper-2.1.3-py2-none-any.whl", hash = "sha256:43f58136dbbfecab54ce0434e556c75689e46b0f11010578b893f72c504cd27b"},
+    {file = "arabic_reshaper-2.1.3-py3-none-any.whl", hash = "sha256:15078431d8f45eaca0a1710100aabc87abba13759c67eeb4538cca22fe167da1"},
+    {file = "arabic_reshaper-2.1.3.tar.gz", hash = "sha256:a236fc6e9dde2a61cc6a5ca962b522e42694e1bb2a2d86894ed7a4eba4ce1890"},
+]
 asgiref = [
     {file = "asgiref-3.4.1-py3-none-any.whl", hash = "sha256:ffc141aa908e6f175673e7b1b3b7af4fdb0ecb738fc5c8b88f69f055c2415214"},
     {file = "asgiref-3.4.1.tar.gz", hash = "sha256:4ef1ab46b484e3c706329cedeff284a5d40824200638503f5768edb6de7d58e9"},
@@ -582,6 +685,13 @@ django-widget-tweaks = [
     {file = "django-widget-tweaks-1.4.9.tar.gz", hash = "sha256:19bcb66a4a9e68493ced04e7124882d753c5be517ed001556f9e35a40147f545"},
     {file = "django_widget_tweaks-1.4.9-py2.py3-none-any.whl", hash = "sha256:d6c64fbf92cd2df9031f597c1374982233c05a1190d295c39d1c57ce007569c7"},
 ]
+future = [
+    {file = "future-0.18.2.tar.gz", hash = "sha256:b1bead90b70cf6ec3f0710ae53a525360fa360d306a86583adc6bf83a4db537d"},
+]
+html5lib = [
+    {file = "html5lib-1.1-py2.py3-none-any.whl", hash = "sha256:0d78f8fde1c230e99fe37986a60526d7049ed4bf8a9fadbad5f00e22e58e041d"},
+    {file = "html5lib-1.1.tar.gz", hash = "sha256:b2e5b40261e20f354d198eae92afc10d750afb487ed5e50f9c4eaf07c184146f"},
+]
 idna = [
     {file = "idna-3.3-py3-none-any.whl", hash = "sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff"},
     {file = "idna-3.3.tar.gz", hash = "sha256:9d643ff0a55b762d5cdb124b8eaa99c66322e2157b69160bc32796e824360e6d"},
@@ -683,6 +793,13 @@ pyjwt = [
     {file = "PyJWT-2.3.0-py3-none-any.whl", hash = "sha256:e0c4bb8d9f0af0c7f5b1ec4c5036309617d03d56932877f2f7a0beeb5318322f"},
     {file = "PyJWT-2.3.0.tar.gz", hash = "sha256:b888b4d56f06f6dcd777210c334e69c737be74755d3e5e9ee3fe67dc18a0ee41"},
 ]
+pypdf2 = [
+    {file = "PyPDF2-1.26.0.tar.gz", hash = "sha256:e28f902f2f0a1603ea95ebe21dff311ef09be3d0f0ef29a3e44a932729564385"},
+]
+python-bidi = [
+    {file = "python-bidi-0.4.2.tar.gz", hash = "sha256:5347f71e82b3e9976dc657f09ded2bfe39ba8d6777ca81a5b2c56c30121c496e"},
+    {file = "python_bidi-0.4.2-py2.py3-none-any.whl", hash = "sha256:50eef6f6a0bbdd685f9e8c207f3c9050f5b578d0a46e37c76a9c4baea2cc2e13"},
+]
 python-dotenv = [
     {file = "python-dotenv-0.19.2.tar.gz", hash = "sha256:a5de49a31e953b45ff2d2fd434bbc2670e8db5273606c1e737cc6b93eff3655f"},
     {file = "python_dotenv-0.19.2-py2.py3-none-any.whl", hash = "sha256:32b2bdc1873fd3a3c346da1c6db83d0053c3c62f28f1f38516070c4c8971b1d3"},
@@ -702,6 +819,42 @@ pytz = [
 redis = [
     {file = "redis-4.0.0-py3-none-any.whl", hash = "sha256:d10fdd7ffa0715626cb3101b5de346639ed0caa70b5b637512f19efaeeaac794"},
     {file = "redis-4.0.0.tar.gz", hash = "sha256:7341184026de22b0aa80999904033a4a131771559ecde9a882ea1862b8ed435f"},
+]
+reportlab = [
+    {file = "reportlab-3.6.2-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:087f8cfa240269d25212ee4a00653b94eb25e518e0510e43786e6e3ede3e2cb8"},
+    {file = "reportlab-3.6.2-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:78ab838ecd4a2a63ca16d6b36f24e5324486e896c9908db1748012265c70d8f0"},
+    {file = "reportlab-3.6.2-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:a3e7c2f4ddb9268ba60c3565c8267f55df1f6a255011bb6f48705630ad29b346"},
+    {file = "reportlab-3.6.2-cp310-cp310-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:dfe876672351b1db89312a7935f755751ef17494ecfbd71484e693bebbd95f8b"},
+    {file = "reportlab-3.6.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:868a65d53b67e7826caf56c5a3bbc7cc7802c3b8949935bf883815400fa138d1"},
+    {file = "reportlab-3.6.2-cp310-cp310-win32.whl", hash = "sha256:58076d11ba4a704ee6f1c2a38b6b7330ba1d14c0df27ed976a75898a59bb6927"},
+    {file = "reportlab-3.6.2-cp310-cp310-win_amd64.whl", hash = "sha256:40d91b1cf10ea3bf49f1c36108ef0e6480ed669c9350035cf14a9c2d311c13db"},
+    {file = "reportlab-3.6.2-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:df046aed158f51bcf2b8b882347d90c479905b0d58eee417cdd6ae3efa75ef68"},
+    {file = "reportlab-3.6.2-cp36-cp36m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:c9b618d1b5f18848b44e500b605b44ac5809f1e5e52e6b41582ed42dbd6aac5c"},
+    {file = "reportlab-3.6.2-cp36-cp36m-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:2e97d16f62cbfbfa78afad1f6b1c55952de61ca529e6a924f8d05e7e55472817"},
+    {file = "reportlab-3.6.2-cp36-cp36m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:42fa6a1e15208e09a159ed91d3ba26e6bb80f4fc519449cc168b445d9d7c3c3f"},
+    {file = "reportlab-3.6.2-cp36-cp36m-win32.whl", hash = "sha256:5528bc5db2b694617ff9f36041e49ca18c3b3202c57e5d87774c27bb4fbc9db9"},
+    {file = "reportlab-3.6.2-cp36-cp36m-win_amd64.whl", hash = "sha256:3d4cf5e7a1940d932d0b76bdb7e826826e1add6e51e3715b85770f6ade3724ef"},
+    {file = "reportlab-3.6.2-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:e0525fc5a9f7ee165c3e5c8b57cad34c479024d97cda2d36e4476ecbb9e46cbd"},
+    {file = "reportlab-3.6.2-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:b17bb378d7abcf004dce16ffe5ddef4c766c5de2360677837afc564550fc281f"},
+    {file = "reportlab-3.6.2-cp37-cp37m-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:8214eca2174f288a9d28bd4c0dc1ba24c4e7f25f09c1320eea9587e43dba5e43"},
+    {file = "reportlab-3.6.2-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e7b02ab2b48dc6986d0c93257fe17ef84955297db163e7b67b4d9ce894dcca1b"},
+    {file = "reportlab-3.6.2-cp37-cp37m-win32.whl", hash = "sha256:a36a325bd8cc8124349e91560cc87dea9ac7849622c9adf4cf11ee0f21c07025"},
+    {file = "reportlab-3.6.2-cp37-cp37m-win_amd64.whl", hash = "sha256:b118a1ae412df57fbeafcc167b0fda2f259b1df93b6c4aec72aa05077d21b375"},
+    {file = "reportlab-3.6.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:6c7645a5dfa81fc936b3c509a3b842c3d1ae3eaa541684086e244812155d18ac"},
+    {file = "reportlab-3.6.2-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:71585db6d44f6e2ed60462dab44c5119d74d8b1b1d6f8738f13f0e6a9fb3d22f"},
+    {file = "reportlab-3.6.2-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:e1413cd9ad1120ccade27128d0986823f8ea5f112cc29b0d4f149169ef561ab9"},
+    {file = "reportlab-3.6.2-cp38-cp38-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:ba1ccb485fa2808900e027fd7eefcbf877079d15e1b19943d34ccb271d809e60"},
+    {file = "reportlab-3.6.2-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:0bffeefc8d501de9114d236c7a8709a5f6d2bef96cea3b9088a1275d48369857"},
+    {file = "reportlab-3.6.2-cp38-cp38-win32.whl", hash = "sha256:68cc76d0ff2c71ba072a50ea7e6aa5ce720cd4a3e6ca480f1acac0776ba1fd54"},
+    {file = "reportlab-3.6.2-cp38-cp38-win_amd64.whl", hash = "sha256:0ec291de9adccc37283a00c7f9fe44aea6801a22c433076d31cd7319d63ed006"},
+    {file = "reportlab-3.6.2-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:4beb408517f5381404f0c3e16884d237c9f5992a9246f66929a42904672dfcca"},
+    {file = "reportlab-3.6.2-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:7a072766b4dfb1f7a6af96402b2c6c40eb2d41ff79ef3da3eafec1bdd79c00fb"},
+    {file = "reportlab-3.6.2-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:4188915eda1c9316a260ec3599232bcbe45ac6c30040472783a734c3f5e019b7"},
+    {file = "reportlab-3.6.2-cp39-cp39-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:21008872be92c3b8e2073feb582de6b1f821544b65de92e8c192ea2a4a74facd"},
+    {file = "reportlab-3.6.2-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:4e88c22b40d18d62d6984f250c9feeedb7112dd3622d1439d2fc311c8dd1e447"},
+    {file = "reportlab-3.6.2-cp39-cp39-win32.whl", hash = "sha256:69e440b23bad2181cb4f9c100d2191ee88239a839375c459c90096921eee490f"},
+    {file = "reportlab-3.6.2-cp39-cp39-win_amd64.whl", hash = "sha256:c50f95242ebc6d8b7bf6b72e745d4487f8bbfc7acd278e12ea00ca0b682f11f7"},
+    {file = "reportlab-3.6.2.tar.gz", hash = "sha256:f0c4b47b012d893b0b9f5703cf6f01b5593714a3fc1e7dc73efbbfe26bb7e16a"},
 ]
 requests = [
     {file = "requests-2.26.0-py2.py3-none-any.whl", hash = "sha256:6c1246513ecd5ecd4528a0906f910e8f0f9c6b8ec72030dc9fd154dc1a6efd24"},
@@ -727,6 +880,10 @@ toml = [
 urllib3 = [
     {file = "urllib3-1.26.7-py2.py3-none-any.whl", hash = "sha256:c4fdf4019605b6e5423637e01bc9fe4daef873709a7973e195ceba0a62bbc844"},
     {file = "urllib3-1.26.7.tar.gz", hash = "sha256:4987c65554f7a2dbf30c18fd48778ef124af6fab771a377103da0585e2336ece"},
+]
+webencodings = [
+    {file = "webencodings-0.5.1-py2.py3-none-any.whl", hash = "sha256:a0af1213f3c2226497a97e2b3aa01a7e4bee4f403f95be16fc9acd2947514a78"},
+    {file = "webencodings-0.5.1.tar.gz", hash = "sha256:b36a1c245f2d304965eb4e0a82848379241dc04b865afcc4aab16748587e1923"},
 ]
 whitenoise = [
     {file = "whitenoise-5.3.0-py2.py3-none-any.whl", hash = "sha256:d963ef25639d1417e8a247be36e6aedd8c7c6f0a08adcb5a89146980a96b577c"},
@@ -784,4 +941,7 @@ wrapt = [
     {file = "wrapt-1.13.3-cp39-cp39-win32.whl", hash = "sha256:0a017a667d1f7411816e4bf214646d0ad5b1da2c1ea13dec6c162736ff25a374"},
     {file = "wrapt-1.13.3-cp39-cp39-win_amd64.whl", hash = "sha256:81bd7c90d28a4b2e1df135bfbd7c23aee3050078ca6441bead44c42483f9ebfb"},
     {file = "wrapt-1.13.3.tar.gz", hash = "sha256:1fea9cd438686e6682271d36f3481a9f3636195578bab9ca3382e2f5f01fc185"},
+]
+xhtml2pdf = [
+    {file = "xhtml2pdf-0.2.5.tar.gz", hash = "sha256:6797e974fac66f0efbe927c1539a2756ca4fe8777eaa5882bac132fc76b39421"},
 ]

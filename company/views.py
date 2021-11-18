@@ -124,7 +124,7 @@ class ComapnyUpdateView(UpdateView):
         
         field_qs = Company.objects.filter(
             name__iexact=name
-        )
+        ).exclude(name__iexact=self.object.name)
         result = validate_normal_form(
             field='name', field_qs=field_qs,
             form=form, request=self.request
