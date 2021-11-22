@@ -10,7 +10,7 @@ from .models import Invoice
 #         model = Invoice
 
 class InvoiceAdmin(admin.ModelAdmin):
-    list_display = ("coupon", "vat", "additional_charge", "total_cost", "status", "created_at")
+    list_display = ("get_company", "coupon", "vat", "additional_charge", "total_cost", "status", "created_at")
 
     class Meta:
         model = Invoice

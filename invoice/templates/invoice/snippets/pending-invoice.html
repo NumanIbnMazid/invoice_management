@@ -1,0 +1,83 @@
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal">
+    <i class="fas fa-exclamation-triangle text-dark"></i>
+    Pending Invoices ({{pending_invoices.count}})
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Pending Invoices</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                .<div class="table-responsive">
+                    <h3 class="text-warning">Pending Invoices <span
+                            class="text-warning fw-bold">({{pending_invoices.count}})</span></h3>
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong><span class="text-warning fw-bold">({{pending_invoices.count}})</span>Pending
+                            Invoices!</strong> You
+                        haven't created invoices in this month for these services.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <table id="pending-invoice-datatable"
+                        class="display table align-items-center table-flush table-hover table-warning"
+                        style="width:100%">
+                        <thead class="">
+                            <tr class="text-center">
+                                <th>#</th>
+                                <th>company</th>
+                                <th>service</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="list table-warning">
+
+                            <!-- table body -->
+                            {% for service in pending_invoices %}
+                            <tr class="text-center">
+
+                                <th>{{ forloop.counter }}</th>
+                                <td>{{ service.company }}</td>
+                                <td>{{ service }}</td>
+
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+
+                        <tfoot class="">
+                            <tr class="text-center">
+                                <th>#</th>
+                                <th>company</th>
+                                <th>service</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block additional_scripts %}
+
+<script>
+    $(document).ready(function () {
+        $('#pending-invoice-datatable').DataTable({
+            "pagingType": "full_numbers"
+        });
+    });
+</script>
+
+{% endblock %}

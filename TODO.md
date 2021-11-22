@@ -27,3 +27,5 @@
 9. Currency
 
 10. InvoiceID: 12 Digits
+
+11. Invoice Month (Pending Invoice for every month, View: jan, com1, ser1)

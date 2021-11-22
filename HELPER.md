@@ -10,8 +10,9 @@
 * Start Redis Server
 
   * Commands
-    $sudo systemctl start redis
+    $ sudo systemctl start redis
     $ sudo systemctl restart redis
+    $ sudo systemctl enable /lib/systemd/system/redis-server.service
 
 * Docker Helper
 
