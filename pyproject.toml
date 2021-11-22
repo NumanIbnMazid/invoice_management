@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "titas"
 version = "0.1.0"
-description = "Client Management Software for Titas"
+description = "Titas Client Management System"
 authors = ["NumanIbnMazid <numanibnmazid@gmail.com>"]
 license = "MIT"
 
@@ -23,6 +23,7 @@ django-allauth = "^0.46.0"
 django-select2 = "^7.9.0"
 django-redis = "^5.0.0"
 xhtml2pdf = "^0.2.5"
+pdfkit = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
 

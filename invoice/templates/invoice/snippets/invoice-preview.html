@@ -1,4 +1,3 @@
-
 <div class="container">
 
     <div class="row">
@@ -6,14 +5,13 @@
             <div class="mb-2">
                 <h1 class="font-30 font-bold c-text-primary">TITAS</h1>
             </div>
-            <h4><b>INVOICE</b> <span class="pull-right">#{{ object.id }}</span></h4>
+            <h4><b>INVOICE</b> <span class="pull-right">#{{ object.uuid }}</span></h4>
         </div>
 
         <div class="col-sm-6 text-lg-center">
             <h3 class="m-0">
                 <b class="text-success">{{ object.get_status_str }}</b>
             </h3>
-
         </div>
     </div>
 
@@ -25,7 +23,7 @@
                 <address>
                     <h4><b>Invoice To</b></h4>
                     <p>
-                        <h5>{{ object.get_company }}</h5>
+                        <h3>{{ object.get_company }}</h3>
                         Email: {{ object.service.first.company.user.email }} <br>
                         {% if object.service.first.company.address %}
                         Address: {{ object.service.first.company.address }} <br>
@@ -43,13 +41,13 @@
                 <address>
                     <h4><b>Pay To</b>&nbsp;</h4>
                     <p>
-                        <h5>
+                        <h3>
                             {% if company_information.name %}
                             {{ company_information.name }}
                             {% else %}
                             Example Company
                             {% endif %}
-                        </h5>
+                        </h3>
                         {% if company_information.email %}
                         Email: {{ company_information.email }} <br>
                         {% endif %}
@@ -115,7 +113,7 @@
                                 <b>Additional Charge:</b>
                             </td>
                             <td class="text-right border-none">
-                                + {{  object.additional_charge }} {{ object.get_currency }}
+                                + {{  object.get_additional_charge }} {{ object.get_currency }}
                             </td>
                         </tr>
                         <tr>
@@ -150,12 +148,8 @@
             </div>
         </div>
 
-        <div class="col-md-12">
-            <a href="https://my.exonhost.com/dashboard">
-                <span><i class="fa fa-arrow-circle-left"></i> Back to Dashboard</span>
-            </a>
-
-            <a href="https://my.exonhost.com/login/old-portal?download_pdf=82428" style="margin-left: 15px">
+        <div class="col-md-12 mt-4">
+            <a href="{% url 'invoice:invoice_pdf_download' slug=object.slug %}">
                 <span><i class="fa fa-arrow-circle-down"></i> Download PDF</span>
             </a>
         </div>

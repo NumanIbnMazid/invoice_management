@@ -1,5 +1,5 @@
 from django.db import models
-from utils.snippets import autoslugWithFieldAndUUID, autoslugFromUUID
+from utils.snippets import autoslugFromUUID, autoUniqueIdWithField
 from service.models import Service
 from deals.models import Coupon, Vat
 from django.utils.translation import gettext_lazy as _
@@ -7,12 +7,14 @@ from utils.choices import Currency
 
 
 @autoslugFromUUID()
+@autoUniqueIdWithField(fieldname="uuid")
 class Invoice(models.Model):
     class Status(models.IntegerChoices):
         CANCELLED = 0, _("Cancelled")
         PAID = 1, _("Paid")
         PENDING = 2, _("Pending")
         
+    uuid = models.PositiveBigIntegerField(unique=True, editable=False)
     service = models.ManyToManyField(Service, related_name="service_invoices")
     slug = models.SlugField(unique=True, max_length=254)
     coupon = models.ForeignKey(Coupon, on_delete=models.SET_NULL, related_name='coupon_invoices', null=True, blank=True)
@@ -93,9 +95,15 @@ class Invoice(models.Model):
             return round(total, 2)
         return 0
     
+    def get_additional_charge(self):
+        total = 0
+        if self.additional_charge:
+            total += self.additional_charge
+        return total
+    
     def get_subtotal_without_coupon(self):
         total = 0
-        total += self.get_service_sub_total() + self.get_vat_amount() + self.additional_charge
+        total += self.get_service_sub_total() + self.get_vat_amount() + self.get_additional_charge()
         return round(total, 2)
     
     def get_company(self):

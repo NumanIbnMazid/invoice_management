@@ -28,8 +28,8 @@ ENV PIP_DEFAULT_TIMEOUT=100 \
 
 # install psycopg2 dependencies
 RUN apk update \
-    && apk add --virtual build-deps gcc python3-dev musl-dev jpeg-dev zlib-dev \
-    && apk add postgresql-dev gcc python3-dev musl-dev jpeg-dev zlib-dev \
+    && apk add --virtual build-deps gcc python3-dev musl-dev jpeg-dev zlib-dev openssl-dev cargo \
+    && apk add postgresql-dev gcc python3-dev musl-dev jpeg-dev zlib-dev openssl-dev cargo \
     && apk del build-deps \
     && apk --no-cache add musl-dev libffi-dev linux-headers g++
 

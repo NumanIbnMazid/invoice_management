@@ -11,6 +11,7 @@ from io import BytesIO
 from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
+import pdfkit
 
 
 def random_string_generator(size=4, chars=string.ascii_lowercase + string.digits):
@@ -129,6 +130,40 @@ def url_check(url):
             return False
     except:
         return False
+
+
+def autoUniqueIdWithField(fieldname):
+    """[Generates auto slug integrating model's field value and UUID]
+
+    Args:
+        fieldname ([str]): [Model field name to use to generate slug]
+    """
+
+    def decorator(model):
+        # some sanity checks first
+        assert hasattr(model, fieldname), f"Model has no field {fieldname}"
+        assert hasattr(model, "slug"), "Model is missing a slug field"
+
+        @receiver(models.signals.pre_save, sender=model, weak=False)
+        def generate_unique_id(sender, instance, *args, raw=False, **kwargs):
+            if not raw and not getattr(instance, fieldname):
+                source = getattr(instance, fieldname)
+                
+                def generate():
+                    uuid = random_number_generator(size=12)
+                    Klass = instance.__class__
+                    qs_exists = Klass.objects.filter(uuid=uuid).exists()
+                    if qs_exists:
+                        generate()
+                    else:
+                        instance.uuid = uuid
+                    pass
+                
+                # generate uuid
+                generate()
+                
+        return model
+    return decorator
 
 
 def autoslugWithFieldAndUUID(fieldname):
@@ -268,3 +303,50 @@ def render_to_pdf(template_src, context_dict={}):
     if not pdf.err:
         return HttpResponse(result.getvalue(), content_type='application/pdf')
     return None
+
+def render_template(template_src, context_dict={}):
+    """[summary]
+
+    Args:
+        template_src ([str]): [path of html file to render]
+        context_dict (dict, optional): [additional contexts]. Defaults to {}.
+
+    Returns:
+        [HttpResponse/None]: [Django HttpResponse object or None]
+    """
+    template = get_template(template_src)
+    html = template.render(context_dict)
+    return html
+
+
+def generate_pdf_with_pdfkit(template_src=None, context=None, options=None, css=[], filename="Download.pdf"):
+    try:
+        if not options:
+            options = {
+                'page-size': 'Letter',
+                'margin-top': '0.75in',
+                'margin-right': '0.75in',
+                'margin-bottom': '0.75in',
+                'margin-left': '0.75in',
+                'encoding': "UTF-8",
+                'custom-header': [
+                    ('Accept-Encoding', 'gzip')
+                ],
+                'cookie': [
+                    ('cookie-empty-value', '""')
+                ],
+                'no-outline': None
+            }
+        
+        template = render_template(template_src=template_src, context_dict=context)
+        
+        pdf = pdfkit.from_string(
+            template, options=options, css=css
+        )
+        
+        response = HttpResponse(pdf, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="' + filename + '"'
+        return response
+    
+    except Exception as E:
+        return HttpResponse(str(E), content_type='text/plain')

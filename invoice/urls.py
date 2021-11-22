@@ -8,5 +8,5 @@ urlpatterns = [
     path("<slug>/detail/", InvoiceDetailView.as_view(), name="invoice_detail"),
     path("delete/", delete_invoice, name="delete_invoice"),
     # PDF URLs
-    path("<slug>/pdf/", GeneratePdf.as_view(), name="invoice_pdf"),
+    path("<slug>/pdf/", GeneratePdf.as_view(), name="invoice_pdf_download"),
 ]

@@ -6,20 +6,19 @@ from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 from django.contrib import messages
 from utils.helpers import (
-    validate_normal_form, get_simple_context_data, get_simple_object, delete_simple_object, user_has_permission
+    get_simple_context_data, get_simple_object, delete_simple_object
 )
 from django.conf import settings
 import json
 import os
 # PDF imports
-from django.http import HttpResponse
 from django.views.generic import View
-from utils.snippets import render_to_pdf
+from utils.snippets import generate_pdf_with_pdfkit
+from django.utils import timezone
 # App Imports
 from .forms import InvoiceManageForm
 from .models import Invoice
-from company.models import Company
-from service.models import Service
+
 
 
 dashboard_decorators = [login_required, has_dashboard_permission_required]
@@ -133,43 +132,39 @@ def delete_invoice(request):
     return delete_simple_object(request=request, key='slug', model=Invoice, redirect_url="invoice:create_invoice")
 
 
+@method_decorator(login_required, name='dispatch')
 class GeneratePdf(View):
     def get(self, request, *args, **kwargs):
         # Object
         self.object = get_simple_object(key="slug", model=Invoice, self=self)
         # Company Information
         STATIC_DATA_FILE = os.path.join(settings.BASE_DIR, 'utils/staticData.json')
-        # Opening JSON file
+        # Open and read JSON file
         data_file = open(STATIC_DATA_FILE,)
         data = json.load(data_file)
         comapny_information = data.get("CompanyInformation", {})
-        # prepare context
+        # prepare context data
         context = {
             "object": self.object,
-            "company_information": comapny_information
+            "company_information": comapny_information,
+            "datetime": timezone.now(),
         }
-        pdf = render_to_pdf('invoice/snippets/invoice-preview.html', context)
-        return HttpResponse(pdf, content_type='application/pdf')
+        
+        # define required stylesheets
+        css =  [
+            os.path.join(settings.BASE_DIR, 'staticfiles/admin_panel/assets/css/bootstrap.css'), os.path.join(
+                settings.BASE_DIR, 'staticfiles/admin_panel/assets/css/custom.css')
+        ]
+        
+        def create_file_name():
+            file_name = '%s Invoice.pdf' % (self.object.get_company())
+            return file_name.strip()
 
-
-# class GeneratePDF(View):
-#     def get(self, request, *args, **kwargs):
-#         template = get_template('invoice.html')
-#         context = {
-#             "invoice_id": 123,
-#             "customer_name": "John Cooper",
-#             "amount": 1399.99,
-#             "today": "Today",
-#         }
-#         html = template.render(context)
-#         pdf = render_to_pdf('invoice.html', context)
-#         if pdf:
-#             response = HttpResponse(pdf, content_type='application/pdf')
-#             filename = "Invoice_%s.pdf" % ("12341231")
-#             content = "inline; filename='%s'" % (filename)
-#             download = request.GET.get("download")
-#             if download:
-#                 content = "attachment; filename='%s'" % (filename)
-#             response['Content-Disposition'] = content
-#             return response
-#         return HttpResponse("Not found")
+        # generate and download PDF
+        response = generate_pdf_with_pdfkit(
+            template_src="invoice/snippets/invoice-pdf-preview.html",
+            context=context,
+            css=css,
+            filename=create_file_name()
+        )
+        return response
