@@ -3,7 +3,6 @@ from utils.snippets import autoslugFromUUID, autoUniqueIdWithField
 from service.models import Service
 from deals.models import Coupon, Vat
 from django.utils.translation import gettext_lazy as _
-from utils.choices import Currency
 
 
 @autoslugFromUUID()
@@ -56,14 +55,6 @@ class Invoice(models.Model):
     def __str__(self):
         return ", ".join([service.name + f" ({service.price} {service.currency})" for service in self.service.all()])
     
-    def get_status_str(self):
-        if self.status == 0:
-            return "Cancelled"
-        elif self.status == 1:
-            return "Paid"
-        else:
-            return "Pending"
-
     def get_fields(self):
         def get_dynamic_fields(field):
             if field.name == 'service':
@@ -78,6 +69,15 @@ class Invoice(models.Model):
                 return (field.name, field.value_from_object(self), field.get_internal_type())
         return [get_dynamic_fields(field) for field in (self.__class__._meta.fields + self.__class__._meta.many_to_many)]
     
+    
+    def get_status_str(self):
+        if self.status == 0:
+            return "Cancelled"
+        elif self.status == 1:
+            return "Paid"
+        else:
+            return "Pending"
+
     def get_currency(self):
         if self.service:
             return self.service.all()[0].currency

@@ -6,9 +6,7 @@
 {% autoescape off %}
 
 <!-- pending invoice -->
-{% if pending_invoices.count >= 1 %}
 {% include "invoice/snippets/pending-invoice.html" %}
-{% endif %}
 
 <!-- Page content -->
 <div class="row">

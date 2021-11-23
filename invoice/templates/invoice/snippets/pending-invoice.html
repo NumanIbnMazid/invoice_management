@@ -1,13 +1,13 @@
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#exampleModal">
     <i class="fas fa-exclamation-triangle text-dark"></i>
-    Pending Invoices ({{pending_invoices.count}})
+    Pending Invoices
 </button>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Pending Invoices</h5>
@@ -17,36 +17,29 @@
             </div>
             <div class="modal-body">
                 .<div class="table-responsive">
-                    <h3 class="text-warning">Pending Invoices <span
-                            class="text-warning fw-bold">({{pending_invoices.count}})</span></h3>
-                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <strong><span class="text-warning fw-bold">({{pending_invoices.count}})</span>Pending
-                            Invoices!</strong> You
-                        haven't created invoices in this month for these services.
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+                    <h3 class="text-warning">Pending Invoices</h3>
                     <table id="pending-invoice-datatable"
                         class="display table align-items-center table-flush table-hover table-warning"
                         style="width:100%">
                         <thead class="">
                             <tr class="text-center">
                                 <th>#</th>
-                                <th>company</th>
-                                <th>service</th>
+                                <th>Invoice</th>
+                                <th>Company</th>
+                                <th>Pending Months</th>
                             </tr>
                         </thead>
 
                         <tbody class="list table-warning">
 
                             <!-- table body -->
-                            {% for service in pending_invoices %}
+                            {% for service in services %}
                             <tr class="text-center">
 
-                                <th>{{ forloop.counter }}</th>
-                                <td>{{ service.company }}</td>
-                                <td>{{ service }}</td>
+                                <th width="5%">{{ forloop.counter }}</th>
+                                <td width="20%">{{ service }}{% if service.is_active == False %} <small class="text-danger">(Inactive)</small>{% endif %}</td>
+                                <td width="10%">{{ service.company }}</td>
+                                <td><b>{{ service.get_pending_invoice_dates }}</b></td>
 
                             </tr>
                             {% endfor %}
@@ -56,8 +49,9 @@
                         <tfoot class="">
                             <tr class="text-center">
                                 <th>#</th>
-                                <th>company</th>
-                                <th>service</th>
+                                <th>Invoice</th>
+                                <th>Company</th>
+                                <th>Pending Months</th>
                             </tr>
                         </tfoot>
                     </table>

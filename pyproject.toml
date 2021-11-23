@@ -24,6 +24,7 @@ django-select2 = "^7.9.0"
 django-redis = "^5.0.0"
 xhtml2pdf = "^0.2.5"
 pdfkit = "^1.0.0"
+python-dateutil = "^2.8.2"
 
 [tool.poetry.dev-dependencies]
 

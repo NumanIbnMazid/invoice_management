@@ -2,6 +2,10 @@ from django.db import models
 from utils.snippets import autoslugWithFieldAndUUID
 from company.models import Company
 from utils.choices import Currency
+from django.db.models.functions import ExtractMonth
+from django.utils import timezone
+import datetime
+from dateutil.relativedelta import relativedelta
 
 
 @autoslugWithFieldAndUUID(fieldname="name")
@@ -34,3 +38,26 @@ class Service(models.Model):
             else:
                 return (field.name, field.value_from_object(self), field.get_internal_type())
         return [get_dynamic_fields(field) for field in self.__class__._meta.fields]
+    
+    def get_pending_invoice_dates(self):
+        dates = []
+        start_date = self.created_at
+        end_date = timezone.now()
+        delta = relativedelta(months=1)
+
+        while start_date <= end_date:
+            if not (start_date.month, start_date.year) in self.service_invoices.filter(service__slug__iexact=self.slug).values_list(
+                    'created_at__month', 'created_at__year'):
+                dates.append(
+                    f"* {start_date.strftime('%B %Y')}"
+                )
+            start_date += delta
+            
+        if self.is_active == True:
+        
+            if len(dates) <= 0:
+                return "-"
+            
+            return ", ".join(dates)
+        
+        return "-"

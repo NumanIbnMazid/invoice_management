@@ -42,16 +42,9 @@ def get_invoice_common_contexts(request):
     data = json.load(data_file)
     comapny_information = data.get("CompanyInformation", {})
     extra_kwargs.update({"company_information": comapny_information})
-    # adding pending invoices
-    pending_invoices = Service.objects.filter(
-        Q(service_invoices__isnull=True) |
-        ~Q(
-            Q(service_invoices__created_at__month=timezone.now().month),
-            Q(service_invoices__created_at__year=timezone.now().year)
-        ) &
-        Q(is_active=True)
-    )
-    extra_kwargs.update({"pending_invoices": pending_invoices})
+    # service lists
+    services = Service.objects.all()
+    extra_kwargs.update({"services": services})
     
     common_contexts = get_simple_context_data(
         request=request, app_namespace='invoice', model_namespace="invoice", model=Invoice, list_template="invoice/invoice-list.html", fields_to_hide_in_table=["id", "slug", "updated_at"], **extra_kwargs
