@@ -1,1 +1,1 @@
-# Client Management Software for Titas Group
+# Invoice Management Application
