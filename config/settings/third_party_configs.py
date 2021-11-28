@@ -1,4 +1,15 @@
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+""" *** Project Directory Configurations *** """
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
 """ # Project Third Party Configurations # """
+
+""" *** Read Project Environment File *** """
+env_path = os.path.join(BASE_DIR, ".env")
+load_dotenv(dotenv_path=env_path)
 
 """
 ----------------------- * Django Allauth Configurations * -----------------------
@@ -19,6 +30,9 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = "username"
 ----------------------- * Django Memcache and Redis Cache Configurations * -----------------------
 """
 
+REDIS_HOST = os.environ.get('REDIS_HOST', '127.0.0.1')
+REDIS_PORT = os.environ.get('REDIS_PORT', '6379')
+
 SESSIONS_ENGINE = 'django.contrib.sessions.backends.cache'
 
 CACHES = {
@@ -28,7 +42,7 @@ CACHES = {
     },
     "select2": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/2",
+        "LOCATION": f"redis://{REDIS_HOST}:{REDIS_PORT}/2",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }

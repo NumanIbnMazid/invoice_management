@@ -38,6 +38,8 @@ services:
     restart: "on-failure"
   web:
     build: . #build the image for the web service from the dockerfile in parent directory
+    environment:
+      - REDIS_HOST=redis
     command: sh -c "poetry run python manage.py makemigrations &&
                     poetry run python manage.py migrate &&
                     poetry run python manage.py initiate_admin &&
