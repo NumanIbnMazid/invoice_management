@@ -17,51 +17,56 @@ class InvoiceManageForm(CustomModelForm):
         
         if self.object:
             self.initial['company'] = self.object.service.first().company
+            
+    try:
     
-    company = forms.ModelChoiceField(
-        queryset=Company.objects.filter(is_active=True),
-        label=u"Company",
-        empty_label="Select Company...",
-        widget=ModelSelect2Widget(
-            model=Company,
-            search_fields=['name__icontains'],
-            max_results=500,
-            attrs={'data-minimum-input-length': '0'}
+        company = forms.ModelChoiceField(
+            queryset=Company.objects.filter(is_active=True),
+            label=u"Company",
+            empty_label="Select Company...",
+            widget=ModelSelect2Widget(
+                model=Company,
+                search_fields=['name__icontains'],
+                max_results=500,
+                attrs={'data-minimum-input-length': '0'}
+            )
         )
-    )
 
-    service = forms.ModelMultipleChoiceField(
-        queryset=Service.objects.all(),
-        label=u"Service",
-        widget=ModelSelect2MultipleWidget(
-            model=Service,
-            search_fields=['name__icontains', 'company__name__icontains'],
-            dependent_fields={'company': 'company'},
-            max_results=500,
-            attrs={'data-minimum-input-length': '0'}
+        service = forms.ModelMultipleChoiceField(
+            queryset=Service.objects.all(),
+            label=u"Service",
+            widget=ModelSelect2MultipleWidget(
+                model=Service,
+                search_fields=['name__icontains', 'company__name__icontains'],
+                dependent_fields={'company': 'company'},
+                max_results=500,
+                attrs={'data-minimum-input-length': '0'}
+            )
         )
-    )
-    
-    coupon = forms.ModelChoiceField(
-        queryset=Coupon.objects.filter(is_active=True),
-        required=False,
-        label=u"Coupon",
-        empty_label="Select Coupon...",
-        widget=ModelSelect2Widget(
-            model=Coupon,
-            search_fields=['code__icontains', 'discount_amount__icontains'],
-            max_results=500,
-            attrs={'data-minimum-input-length': '0'}
+        
+        coupon = forms.ModelChoiceField(
+            queryset=Coupon.objects.filter(is_active=True),
+            required=False,
+            label=u"Coupon",
+            empty_label="Select Coupon...",
+            widget=ModelSelect2Widget(
+                model=Coupon,
+                search_fields=['code__icontains', 'discount_amount__icontains'],
+                max_results=500,
+                attrs={'data-minimum-input-length': '0'}
+            )
         )
-    )
-    
-    vat = forms.ModelChoiceField(
-        queryset=Vat.objects.filter(is_active=True),
-        required=False,
-        initial=Vat.objects.filter(is_active=True).last(),
-        label=u"Vat",
-        empty_label="Select Vat..."
-    )
+        
+        vat = forms.ModelChoiceField(
+            queryset=Vat.objects.filter(is_active=True),
+            required=False,
+            initial=Vat.objects.filter(is_active=True).last(),
+            label=u"Vat",
+            empty_label="Select Vat..."
+        )
+    except Exception as e:
+        
+        print("*********** Exception: Invoice->forms.py: ", e, "***********")
     
     class Meta:
         model = Invoice

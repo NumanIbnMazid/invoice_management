@@ -5,7 +5,7 @@ services:
     container_name: 'nginx'
     build: ./nginx
     ports:
-      - 9001:80
+      - ${APP_PORT}:80
     volumes:
       - web-static:/home/app/titas/static
     depends_on:
