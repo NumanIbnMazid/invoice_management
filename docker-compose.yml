@@ -22,6 +22,14 @@ services:
       - PGPORT=${DB_PORT}
       - POSTGRES_USER=${POSTGRES_USER}
     restart: "on-failure"
+  redis:
+    container_name: 'redis'
+    image: redis:alpine
+    ports:
+      - '6378:6379'
+    volumes:
+      - 'redisdata:/data'
+    restart: "on-failure"
   memcached:
     container_name: 'memcached'
     image: 'memcached:latest'
@@ -48,9 +56,11 @@ services:
     restart: "on-failure"
     depends_on:
       - db
+      - redis
       - memcached
 
 volumes:
   postgres_data:
+  redisdata:
   web-django:
   web-static:

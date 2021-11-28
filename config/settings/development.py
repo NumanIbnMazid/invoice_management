@@ -4,7 +4,8 @@ from config.settings.common import *
 import dj_database_url
 
 """ *** Application Allowed Hosts *** """
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(" ")
+# ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(" ")
+ALLOWED_HOSTS = ["*"]
 
 """ *** Database Configuration *** """
 try:
