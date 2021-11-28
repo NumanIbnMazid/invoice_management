@@ -29,3 +29,8 @@
 10. InvoiceID: 12 Digits
 
 11. Invoice Month (Pending Invoice for every month, View: jan, com1, ser1)
+
+12. Connect Docker with Local PostgreSQL Database
+
+13. Install wkhtmltopdf in docker
+
