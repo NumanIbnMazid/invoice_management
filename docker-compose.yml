@@ -35,7 +35,7 @@ services:
                     poetry run python manage.py initiate_admin &&
                     poetry run python manage.py initiate_site &&
                     poetry run python manage.py collectstatic --noinput &&
-                    gunicorn config.wsgi:application --bind 0.0.0.0:${APP_PORT}"
+                    poetry run gunicorn config.wsgi:application --bind 0.0.0.0:${APP_PORT}"
     volumes:
       - web-django:/home/app/titas
       - web-static:/home/app/titas/static
