@@ -36,8 +36,8 @@ ADMIN_URL_PATTERNS = [
 
 urlpatterns = [
     # For handling Static Files in Debug False Mode
-    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
-    url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
+    # url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    # url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
     path('admin/', admin.site.urls),
     # ==============================*** UTILS URLS ***==============================
     path("utils/", include(("utils.urls", "utils"), namespace="utils")),
