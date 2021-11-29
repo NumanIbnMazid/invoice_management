@@ -2,6 +2,8 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
+from django.conf.urls import url
+from django.views.static import serve
 import debug_toolbar
 # views
 from .user_panel_views import HomepageView
@@ -33,6 +35,9 @@ ADMIN_URL_PATTERNS = [
 ]
 
 urlpatterns = [
+    # For handling Static Files in Debug False Mode
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
     path('admin/', admin.site.urls),
     # ==============================*** UTILS URLS ***==============================
     path("utils/", include(("utils.urls", "utils"), namespace="utils")),
