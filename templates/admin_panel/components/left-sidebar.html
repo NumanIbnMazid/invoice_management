@@ -24,6 +24,9 @@
                     <span class="menu-title text-truncate" data-i18n="Dashboard">Dashboard</span>
                 </a>
             </li>
+
+            {% if request.user.is_superuser %}
+
             <li class="nav-item">
                 <a class="d-flex align-items-center" href="{% url 'company:create_company' %}">
                     <i class="fas fa-building"></i>
@@ -54,6 +57,20 @@
                     <span class="menu-title text-truncate" data-i18n="Invoice">Invoice</span>
                 </a>
             </li>
+
+            {% endif %}
+
+            {% if request.user.is_company %}
+
+            <li class="nav-item">
+                <a class="d-flex align-items-center" href="{% url 'invoice:company_invoice_list' %}">
+                    <i class="fas fa-file-invoice"></i>
+                    <span class="menu-title text-truncate" data-i18n="Invoice">Invoices</span>
+                </a>
+            </li>
+
+            {% endif %}
+
         </ul>
     </nav>
     <!-- END: Main-Menu-Content -->

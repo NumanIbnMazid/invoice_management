@@ -29,7 +29,10 @@
                         Address: {{ object.service.first.company.address }} <br>
                         {% endif %}
                         {% if object.service.first.company.contact %}
-                        Contact: {{ object.service.first.company.contact }}
+                        Contact: {{ object.service.first.company.contact }} <br>
+                        {% endif %}
+                        {% if object.card_number %}
+                        Card Number: {{ object.get_card_number }}
                         {% endif %}
                     </p>
                     <p><b>Invoice Date :</b> {{ object.created_at|date:'Y/m/d' }}</p>

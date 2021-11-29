@@ -1,0 +1,138 @@
+{% extends "admin_panel/base.html" %}
+{% load static %}
+{% load custom_tags %}
+
+{% block content %}
+
+{% if can_view == True %}
+
+{% autoescape off %}
+
+<!-- Page content -->
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <!-- Card header -->
+            <div class="card-header border-0 text-center">
+                <h3 class="mb-0">
+                    {% if not display_name == None %}
+                    {{ display_name }}
+                    {% else %}
+                    {{ namespace|to_title }}
+                    {% endif %}
+                </h3>
+            </div>
+            <!-- Light table -->
+            <div class="table-responsive">
+                <table id="list-datatable" class="display table align-items-center table-flush table-hover"
+                    style="width:100%">
+                    <thead class="">
+                        <tr class="text-center">
+                            <th>Action</th>
+                            <th>#</th>
+                            <th>uuid</th>
+                            <th>service</th>
+                            <th>coupon</th>
+                            <th>vat</th>
+                            <th>additional charge</th>
+                            <th>total cost</th>
+                            <th>status</th>
+                            <th>created at</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="list">
+
+                        <!-- table body -->
+                        {% for object in object_list %}
+                        <tr class="text-center">
+
+                            <th width="10">
+                                <!-- invoice view button -->
+                                <a href="{% url 'invoice:invoice_detail' slug=object.slug %}"
+                                    class="btn btn-primary btn-sm m-1 text-deco-none">
+                                    <span class="">
+                                        <i class="fas fa-eye" aria-hidden="true"></i>
+                                    </span>
+                                </a>
+                            </th>
+
+                            <th>{{ forloop.counter }}</th>
+
+                            <td>{{ object.uuid }}</td>
+                            <td>{{ object }}</td>
+                            <td>
+                                {% if object.coupon %}
+                                {{ object.coupon }}
+                                {% else %}
+                                ---
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if object.vat %}
+                                {{ object.vat.vat_percentage }}%
+                                {% else %}
+                                ---
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if object.additional_charge %}
+                                {{ object.additional_charge }} {{ object.get_currency }}
+                                {% else %}
+                                ---
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{ object.total_cost }} {{ object.get_currency }}
+                            </td>
+                            <td>
+                                {% if object.status == 0 %}
+                                <i class="fas fa-times-circle text-danger fw-bold"></i>
+                                {% elif object.status == 1 %}
+                                <i class="fas fa-check-circle text-success fw-bold"></i>
+                                {% else %}
+                                <i class="fas fa-sync-alt text-warning fw-bold"></i>
+                                {% endif %}
+
+                                {{ object.get_status_str }}
+                            </td>
+                            <td>{{ object.created_at }}</td>
+
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="10" class="text-center">
+                                <div class="alert alert-info">
+                                    No item found!
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+
+                    <tfoot class="">
+                        <tr class="text-center">
+                            <th>Action</th>
+                            <th>#</th>
+                            <th>uuid</th>
+                            <th>service</th>
+                            <th>coupon</th>
+                            <th>vat</th>
+                            <th>additional charge</th>
+                            <th>total cost</th>
+                            <th>status</th>
+                            <th>created at</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endautoescape %}
+
+{% endif %}
+
+{% endblock %}

@@ -70,7 +70,7 @@ class InvoiceManageForm(CustomModelForm):
     
     class Meta:
         model = Invoice
-        fields = ("company", "service", "coupon", "vat", "additional_charge", "status")
+        fields = ("company", "service", "coupon", "vat", "additional_charge", "card_number", "status")
         exclude = ('slug', 'total_cost', 'created_at', 'created_at')
         
 

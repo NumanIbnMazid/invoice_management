@@ -42,6 +42,8 @@
                         <span class="user-status">
                             {% if request.user.is_staff == True %}
                             Admin
+                            {% elif request.user.is_company == True %}
+                            Company User
                             {% else %}
                             Regular User
                             {% endif %}
@@ -54,10 +56,8 @@
                     </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown-user">
-                    <a class="dropdown-item" href="javascript:void(0);">
-                        <i class="mr-50" data-feather="user"></i>
-                        Profile
-                    </a>
+                    <a class="dropdown-item" href="{% url 'account_email' %}">Manage Account</a>
+                    <a class="dropdown-item" href="{% url 'account_change_password' %}">Change Password</a>
                     <a class="dropdown-item" data-toggle="modal" data-target="#logoutModal">
                         <i class="mr-50" data-feather="power"></i>
                         Logout

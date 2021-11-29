@@ -33,4 +33,3 @@
 12. Connect Docker with Local PostgreSQL Database
 
 13. Install wkhtmltopdf in docker
-

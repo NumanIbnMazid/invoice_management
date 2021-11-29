@@ -1,4 +1,5 @@
-from django.views.generic import CreateView, UpdateView, DetailView
+from django.views.generic import CreateView, UpdateView, DetailView, ListView
+from company.models import Company
 from utils.decorators import has_dashboard_permission_required
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -11,7 +12,7 @@ from utils.helpers import (
 from django.conf import settings
 import json
 import os
-from django.db.models import Q
+from django.http import HttpResponseRedirect
 # PDF imports
 from django.views.generic import View
 from utils.snippets import generate_pdf_with_pdfkit
@@ -47,8 +48,10 @@ def get_invoice_common_contexts(request):
     extra_kwargs.update({"services": services})
     
     common_contexts = get_simple_context_data(
-        request=request, app_namespace='invoice', model_namespace="invoice", model=Invoice, list_template="invoice/invoice-list.html", fields_to_hide_in_table=["id", "slug", "updated_at"], **extra_kwargs
+        request=request, app_namespace='invoice', model_namespace="invoice", model=Invoice, list_template="invoice/invoice-list.html", fields_to_hide_in_table=["id", "slug", "updated_at", "card_number"], **extra_kwargs
     )
+    # update fields count in context
+    common_contexts.update({"fields_count": common_contexts["fields_count"] + 2})
     return common_contexts
 
 
@@ -77,12 +80,23 @@ class InvoiceCreateView(CreateView):
         return context
 
 
-@method_decorator(dashboard_decorators, name='dispatch')
+@method_decorator(login_required, name='dispatch')
 class InvoiceDetailView(DetailView):
     template_name = "invoice/invoice-detail.html"
 
     def get_object(self):
         return get_simple_object(key='slug', model=Invoice, self=self)
+    
+    def dispatch(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        is_superuser = request.user.is_superuser
+        is_company = True if self.object.service.filter(company__user=request.user).exists() else False
+        if not is_superuser and not is_company:
+            messages.error(
+                self.request, 'Access Denied!'
+            )
+            return HttpResponseRedirect(reverse('home'))
+        return super(InvoiceDetailView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(
@@ -137,6 +151,12 @@ def delete_invoice(request):
     return delete_simple_object(request=request, key='slug', model=Invoice, redirect_url="invoice:create_invoice")
 
 
+""" 
+-------------------------------------------------------------------
+                        *** PDF ***
+-------------------------------------------------------------------
+"""
+
 @method_decorator(login_required, name='dispatch')
 class GeneratePdf(View):
     def get(self, request, *args, **kwargs):
@@ -173,3 +193,57 @@ class GeneratePdf(View):
             filename=create_file_name()
         )
         return response
+    
+    def dispatch(self, request, *args, **kwargs):
+        self.object = get_simple_object(key="slug", model=Invoice, self=self)
+        is_superuser = request.user.is_superuser
+        is_company = True if self.object.service.filter(
+            company__user=request.user).exists() else False
+        if not is_superuser and not is_company:
+            messages.error(
+                self.request, 'Access Denied!'
+            )
+            return HttpResponseRedirect(reverse('home'))
+        return super(GeneratePdf, self).dispatch(request, *args, **kwargs)
+    
+    
+""" 
+-------------------------------------------------------------------
+                    *** Company Invoice List ***
+-------------------------------------------------------------------
+"""
+
+
+@method_decorator(login_required, name='dispatch')
+class CompanyInvoiceListView(ListView):
+    template_name = "invoice/company-invoice-list.html"
+    
+    def get_queryset(self):
+        qs = None
+        company_qs = Company.objects.filter(user=self.request.user)
+        if company_qs:
+            company = company_qs.first()
+            qs = Invoice.objects.filter(service__company=company)
+            
+        return qs
+    
+    def dispatch(self, request, *args, **kwargs):
+        is_superuser = request.user.is_superuser
+        is_company = True if self.request.user.is_company else False
+        if not is_superuser and not is_company:
+            messages.error(
+                self.request, 'Access Denied!'
+            )
+            return HttpResponseRedirect(reverse('home'))
+        return super(CompanyInvoiceListView, self).dispatch(request, *args, **kwargs)
+    
+    
+    def get_context_data(self, **kwargs):
+        context = super(
+            CompanyInvoiceListView, self
+        ).get_context_data(**kwargs)
+        context['page_title'] = 'Invoice List'
+        context['page_short_title'] = 'Invoice List'
+        context['display_name'] = 'Invoice List'
+        context['can_view'] = True
+        return context

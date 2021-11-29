@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 
-dashboard_decorators = [login_required, has_dashboard_permission_required]
+dashboard_decorators = [login_required]
 
 
 @method_decorator(dashboard_decorators, name='dispatch')

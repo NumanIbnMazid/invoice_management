@@ -19,6 +19,7 @@ class Invoice(models.Model):
     coupon = models.ForeignKey(Coupon, on_delete=models.SET_NULL, related_name='coupon_invoices', null=True, blank=True)
     vat = models.ForeignKey(Vat, on_delete=models.SET_NULL, related_name='vat_invoices', blank=True, null=True)
     additional_charge = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    card_number = models.BigIntegerField(blank=True, null=True)
 
     def _get_total_cost(self):
         "Returns the total cost of invoice."
@@ -110,3 +111,6 @@ class Invoice(models.Model):
         if self.service:
             return self.service.all()[0].company.name
         return "Undefined"
+
+    def get_card_number(self):
+        return "*" * len(str(self.card_number)[:-4]) + str(self.card_number)[-4:]
