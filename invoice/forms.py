@@ -15,7 +15,7 @@ class InvoiceManageForm(CustomModelForm):
         self.object = kwargs.pop('object', None)
         super(InvoiceManageForm, self).__init__(*args, **kwargs)
         
-        if self.object:
+        if self.object and len(self.object.service.all()) > 0:
             self.initial['company'] = self.object.service.first().company
             
     try:

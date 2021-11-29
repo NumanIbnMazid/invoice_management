@@ -81,8 +81,9 @@ class Invoice(models.Model):
 
     def get_currency(self):
         if self.service:
-            return self.service.all()[0].currency
-        return "Undefined"
+            if len(self.service.all()) > 0:
+                return self.service.all().first().currency
+        return "BDT"
     
     def get_service_sub_total(self):
         total = 0
@@ -109,7 +110,8 @@ class Invoice(models.Model):
     
     def get_company(self):
         if self.service:
-            return self.service.all()[0].company.name
+            if len(self.service.all()) > 0:
+                return self.service.all().first().company
         return "Undefined"
 
     def get_card_number(self):
