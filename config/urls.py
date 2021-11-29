@@ -19,7 +19,7 @@ THIRD_PARTY_URL_PATTERNS = [
 
 END_USER_URL_PATTERNS = [
     # User panel URLs
-    path('', HomepageView.as_view(), name='home'),
+    path('', DashboardView.as_view(), name='home'),
 ]
 
 ADMIN_URL_PATTERNS = [
