@@ -15,10 +15,12 @@ load_dotenv(dotenv_path=env_path)
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 """ *** DEBUG Configurations *** """
-if eval(str(os.environ.get('IS_PRODUCTION'))) == True or eval(str(os.environ.get('IS_STAGING'))) == True:
-    DEBUG = False
-else:
-    DEBUG = True
+# if eval(str(os.environ.get('IS_PRODUCTION'))) == True or eval(str(os.environ.get('IS_STAGING'))) == True:
+#     DEBUG = False
+# else:
+#     DEBUG = True
+
+DEBUG = True
     
 """ *** Database URL Configurations *** """
 if eval(str(os.environ.get('IS_PRODUCTION'))) and os.environ.get('PRODUCTION_DATABASE_URL'):
