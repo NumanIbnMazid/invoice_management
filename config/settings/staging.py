@@ -6,6 +6,8 @@ import dj_database_url
 """ *** Application Allowed Hosts *** """
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(" ")
 
+DEBUG = True
+
 """ *** Database Configuration *** """
 try:
     if DYNAMIC_DATABASE_URL:
