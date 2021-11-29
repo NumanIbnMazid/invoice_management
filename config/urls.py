@@ -8,6 +8,7 @@ import debug_toolbar
 # views
 from .user_panel_views import HomepageView
 from .dashboard_views import DashboardView
+from django.conf.urls import handler404, handler500
 
 
 THIRD_PARTY_URL_PATTERNS = [
@@ -43,6 +44,9 @@ urlpatterns = [
     path("utils/", include(("utils.urls", "utils"), namespace="utils")),
 ] + THIRD_PARTY_URL_PATTERNS + END_USER_URL_PATTERNS + ADMIN_URL_PATTERNS
 
+
+# Exception Handlers
+handler500 = 'config.user_panel_views.server_error'
 
 if settings.DEBUG:
     import debug_toolbar
