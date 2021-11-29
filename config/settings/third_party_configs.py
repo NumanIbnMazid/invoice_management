@@ -62,7 +62,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 """
 
 INTERNAL_IPS = [
-    '127.0.0.1', '0.0.0.0'
+    '127.0.0.1', '0.0.0.0', '167.172.87.22'
 ]
 
 """
