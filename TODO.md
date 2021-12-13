@@ -33,3 +33,9 @@
 12. Connect Docker with Local PostgreSQL Database
 
 13. Install wkhtmltopdf in docker
+
+14. Payment Gateway Type in invoice
+
+15. Standard Card Fields + Card Name + Name on Card (Isolated in DB Model)
+
+16. Card Field: ADMIN PANEL

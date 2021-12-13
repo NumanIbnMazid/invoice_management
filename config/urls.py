@@ -25,6 +25,8 @@ END_USER_URL_PATTERNS = [
 
 ADMIN_URL_PATTERNS = [
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
+    # ==============================*** User URLS ***==============================
+    path("users/", include(("users.urls", "users"), namespace="users")),
     # ==============================*** Company URLS ***==============================
     path("company/", include(("company.urls", "company"), namespace="company")),
     # ==============================*** Service URLS ***==============================

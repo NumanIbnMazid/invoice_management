@@ -76,6 +76,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     slug = models.SlugField(unique=True, max_length=254)
     updated_at = models.DateTimeField(auto_now=True)
     is_company = models.BooleanField(default=False)
+    payment_permission = models.BooleanField(default=True)
     """ Additional Fields Ends """
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -110,6 +111,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         elif not self.username == None and not self.username == "":
             return self.username
         return self.email
+    
+    def get_fields(self):
+        def get_dynamic_fields(field):
+            return (field.name, field.value_from_object(self), field.get_internal_type())
+        return [get_dynamic_fields(field) for field in self.__class__._meta.fields]
 
 
 @receiver(pre_save, sender=User)

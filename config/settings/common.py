@@ -58,6 +58,7 @@ LOCAL_APPS = [
     "service",
     "deals",
     "invoice",
+    "cards"
 ]
 
 INSTALLED_APPS = [

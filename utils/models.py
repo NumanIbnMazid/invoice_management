@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from utils.choices import Currency
+from utils.snippets import autoslugFromUUID
 
 
 class DashboardSetting(models.Model):
@@ -101,3 +103,26 @@ class DashboardSetting(models.Model):
             return "footer footer-light footer-static"
         else:
             return "footer footer-light footer-static d-none"
+        
+
+@autoslugFromUUID()
+class Configuration(models.Model):
+    payment_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    slug = models.SlugField(unique=True, max_length=254)
+    currency = models.CharField(max_length=10, choices=Currency.choices, default=Currency.BDT)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Configuration'
+        verbose_name_plural = 'Configurations'
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return str(self.payment_amount)
+
+    def get_fields(self):
+        def get_dynamic_fields(field):
+            return (field.name, field.value_from_object(self), field.get_internal_type())
+        return [get_dynamic_fields(field) for field in self.__class__._meta.fields]

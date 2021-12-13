@@ -28,6 +28,12 @@
             {% if request.user.is_superuser %}
 
             <li class="nav-item">
+                <a class="d-flex align-items-center" href="{% url 'users:create_user' %}">
+                    <i class="fas fa-user"></i>
+                    <span class="menu-title text-truncate" data-i18n="User">User</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="d-flex align-items-center" href="{% url 'company:create_company' %}">
                     <i class="fas fa-building"></i>
                     <span class="menu-title text-truncate" data-i18n="Company">Company</span>
@@ -55,6 +61,12 @@
                 <a class="d-flex align-items-center" href="{% url 'invoice:create_invoice' %}">
                     <i class="fas fa-file-invoice"></i>
                     <span class="menu-title text-truncate" data-i18n="Invoice">Invoice</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="d-flex align-items-center" href="{% url 'utils:create_configuration' %}">
+                    <i class="fas fa-cogs"></i>
+                    <span class="menu-title text-truncate" data-i18n="Invoice">Configuration</span>
                 </a>
             </li>
 

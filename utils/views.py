@@ -1,4 +1,4 @@
-from .models import DashboardSetting
+from .models import DashboardSetting, Configuration
 from django.http import JsonResponse
 from django.views.generic import View
 import json
@@ -6,6 +6,14 @@ from django.utils import timezone
 from .decorators import has_dashboard_permission_required
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from utils.helpers import (
+    validate_normal_form, get_simple_context_data, get_simple_object, delete_simple_object, user_has_permission
+)
+from django.views.generic import CreateView, UpdateView, DetailView
+from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse
+from django.contrib import messages
+from .forms import ConfigurationManageForm
 
 
 dashboard_decorators = [login_required, has_dashboard_permission_required]
@@ -94,3 +102,100 @@ class DashboardSettingView(View):
             except Exception as E:
                 return JsonResponse({"valid": False, "Exception": str(E)}, status=400)
         return JsonResponse({}, status=400)
+
+
+""" 
+-------------------------------------------------------------------
+                        ** Configuration ***
+-------------------------------------------------------------------
+"""
+
+
+def get_configuration_common_contexts(request):
+    # Hide Create Option if vat already exists
+    extra_kwargs = {}
+    if len(Configuration.objects.all()) >= 1:
+        extra_kwargs["create_url"] = None
+
+    common_contexts = get_simple_context_data(
+        request=request, app_namespace='utils', model_namespace="configuration", model=Configuration, list_template=None, fields_to_hide_in_table=["id"], **extra_kwargs
+    )
+    return common_contexts
+
+
+@method_decorator(dashboard_decorators, name='dispatch')
+class ConfigurationCreateView(CreateView):
+    template_name = "admin_panel/snippets/manage.html"
+    form_class = ConfigurationManageForm
+
+    def form_valid(self, form, **kwargs):
+        messages.success(
+            self.request, 'Configuration created successfully!'
+        )
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("utils:create_configuration")
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            ConfigurationCreateView, self
+        ).get_context_data(**kwargs)
+        context['page_title'] = 'Create Configuration'
+        context['page_short_title'] = 'Create Configuration'
+        for key, value in get_configuration_common_contexts(request=self.request).items():
+            context[key] = value
+        return context
+
+
+@method_decorator(dashboard_decorators, name='dispatch')
+class ConfigurationDetailView(DetailView):
+    template_name = "admin_panel/snippets/detail-common.html"
+
+    def get_object(self):
+        return get_simple_object(key='slug', model=Configuration, self=self)
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            ConfigurationDetailView, self
+        ).get_context_data(**kwargs)
+        context['page_title'] = 'Configuration Detail'
+        context['page_short_title'] = 'Configuration Detail'
+        for key, value in get_configuration_common_contexts(request=self.request).items():
+            context[key] = value
+        return context
+
+
+@method_decorator(dashboard_decorators, name='dispatch')
+class ConfigurationUpdateView(UpdateView):
+    template_name = 'admin_panel/snippets/manage.html'
+    form_class = ConfigurationManageForm
+
+    def get_object(self):
+        return get_simple_object(key="slug", model=Configuration, self=self)
+
+    def get_success_url(self):
+        return reverse("utils:create_configuration")
+
+    def form_valid(self, form):
+        messages.success(
+            self.request, 'Configuration updated successfully!'
+        )
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            ConfigurationUpdateView, self
+        ).get_context_data(**kwargs)
+        context['page_title'] = 'Update Configuration'
+        context['page_short_title'] = 'Update Configuration'
+        for key, value in get_configuration_common_contexts(request=self.request).items():
+            context[key] = value
+        return context
+
+
+@csrf_exempt
+@has_dashboard_permission_required
+@login_required
+def delete_configuration(request):
+    return delete_simple_object(request=request, key='slug', model=Configuration, redirect_url="utils:create_configuration")

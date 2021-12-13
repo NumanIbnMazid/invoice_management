@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import DashboardSetting
+from .models import DashboardSetting, Configuration
 
 
 class DashboardSettingAdmin(admin.ModelAdmin):
@@ -9,3 +9,12 @@ class DashboardSettingAdmin(admin.ModelAdmin):
         model = DashboardSetting
 
 admin.site.register(DashboardSetting, DashboardSettingAdmin)
+
+
+class ConfigurationAdmin(admin.ModelAdmin):
+    list_display = ['payment_amount', 'currency', 'is_active', 'created_at', 'updated_at']
+
+    class Meta:
+        model = Configuration
+
+admin.site.register(Configuration, ConfigurationAdmin)
