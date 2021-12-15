@@ -69,6 +69,12 @@
                     <span class="menu-title text-truncate" data-i18n="Invoice">Configuration</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="d-flex align-items-center" href="{% url 'cards:admin_card_list' %}">
+                    <i class="fas fa-credit-card"></i>
+                    <span class="menu-title text-truncate" data-i18n="Invoice">Card List</span>
+                </a>
+            </li>
 
             {% endif %}
 
@@ -78,6 +84,17 @@
                 <a class="d-flex align-items-center" href="{% url 'invoice:company_invoice_list' %}">
                     <i class="fas fa-file-invoice"></i>
                     <span class="menu-title text-truncate" data-i18n="Invoice">Invoices</span>
+                </a>
+            </li>
+
+            {% endif %}
+
+            {% if request.user.is_authenticated and request.user.payment_permission and not request.user.is_superuser %}
+
+            <li class="nav-item">
+                <a class="d-flex align-items-center" href="{% url 'cards:create_card' %}">
+                    <i class="fas fa-credit-card"></i>
+                    <span class="menu-title text-truncate" data-i18n="Invoice">Card</span>
                 </a>
             </li>
 

@@ -101,7 +101,7 @@ class CompanyDetailView(DetailView):
             CompanyDetailView, self
         ).get_context_data(**kwargs)
         context['page_title'] = f'Comapny - {self.get_object().name} Detail'
-        context['page_short_title'] = f'Thread - {self.get_object().name} Detail'
+        context['page_short_title'] = f'Comapny - {self.get_object().name} Detail'
         for key, value in get_company_common_contexts(request=self.request).items():
             context[key] = value
         return context
