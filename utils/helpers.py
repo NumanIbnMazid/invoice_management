@@ -156,7 +156,7 @@ def delete_simple_object(request, key, model, redirect_url):
 """
 
 
-def get_simple_context_data(request=None, app_namespace=None, model_namespace=None, display_name=None, model=None, list_template=None, fields_to_hide_in_table=[], validate_permissions=False, **kwargs):
+def get_simple_context_data(request=None, app_namespace=None, model_namespace=None, display_name=None, model=None, list_template=None, create_modal=None, fields_to_hide_in_table=[], validate_permissions=False, **kwargs):
     """
     params: request, app_namespace (string), model_namespace (string), model (class), fields_to_hide_in_table (list), **kwargs
 
@@ -195,8 +195,7 @@ def get_simple_context_data(request=None, app_namespace=None, model_namespace=No
             => ["slug", "id"]
     """
     def get_permission_namespace(namespace):
-        whitelist = set(
-            'abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+        whitelist = set('abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ')
         filtered_permission_namespace = ''.join(
             filter(whitelist.__contains__, namespace))
         return filtered_permission_namespace
@@ -258,9 +257,14 @@ def get_simple_context_data(request=None, app_namespace=None, model_namespace=No
 
     common_contexts["namespace"] = model_namespace
     common_contexts["display_name"] = display_name
+    if display_name:
+        common_contexts["page_short_title"] = display_name
+        common_contexts["page_title"] = display_name
     common_contexts["list_objects"] = model.objects.all().order_by('-id')
     if not list_template == None:
         common_contexts["list_template"] = list_template
+    if not create_modal == None:
+        common_contexts["create_modal"] = create_modal
     
     # models fields
     MODEL_FIELDS = model._meta.fields

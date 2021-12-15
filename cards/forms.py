@@ -11,10 +11,17 @@ class CardManageForm(CustomModelForm):
     
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
+        self.object = kwargs.pop('object', None)
         super(CardManageForm, self).__init__(*args, **kwargs)
 
-        if len(Configuration.objects.all()) > 0:
-            self.initial['payment_amount'] = Configuration.objects.last().payment_amount
+        if len(Configuration.objects.all()) > 0 and not self.object:
+            self.initial['payment_amount'] = Configuration.objects.last().payment_amount if Configuration.objects.last().is_active else None
+            
+        # card fields
+        # self.fields["name_on_card"].widget.attrs.update({'class': 'payment-cardname form-control', 'data-id': 'payment-cardname'})
+        # self.fields["card_number"].widget.attrs.update({'class': 'payment-cardnumber form-control', 'data-id': 'payment-cardnumber'})
+        # self.fields["expire_date"].widget.attrs.update({'class': 'expirydate form-control', 'data-id': 'expirydate'})
+        # self.fields["cvc"].widget.attrs.update({'class': 'cvvnumber form-control', 'data-id': 'cvvnumber'})
             
     class Meta:
         model = Card

@@ -39,3 +39,11 @@
 15. Standard Card Fields + Card Name + Name on Card (Isolated in DB Model)
 
 16. Card Field: ADMIN PANEL
+
+17. Create Card: Server Services Payment (Template View)
+
+18. URL: Service Payment
+
+19. Form Design
+
+20. Card List -> Service Payment List (Card)

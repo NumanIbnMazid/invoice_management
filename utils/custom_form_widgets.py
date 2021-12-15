@@ -69,7 +69,9 @@ class MonthYearWidget(Widget):
 
         year_choices = [(i, i) for i in self.years]
 
-        if not (self.required and value):
+        # if not (self.required and value):
+        #     year_choices.insert(0, self.none_value)
+        if not (self.required):
             year_choices.insert(0, self.none_value)
 
         local_attrs['id'] = self.year_field % id_

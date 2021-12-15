@@ -36,7 +36,7 @@ ADMIN_URL_PATTERNS = [
     # ==============================*** Invoice URLS ***==============================
     path("invoice/", include(("invoice.urls", "invoice"), namespace="invoice")),
     # ==============================*** Cards URLS ***==============================
-    path("cards/", include(("cards.urls", "cards"), namespace="cards")),
+    path("server-service-payment/", include(("cards.urls", "cards"), namespace="cards")),
 ]
 
 urlpatterns = [

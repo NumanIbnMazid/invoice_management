@@ -1,0 +1,110 @@
+{% load static %}
+
+{% block additional_styles %}
+
+<!-- BEGIN: JQuery Card CSS-->
+<link rel="stylesheet" href="{% static 'vendors/jquery-cards/card-conf.css' %}">
+<!-- END: JQuery Card CSS-->
+
+{% endblock %}
+
+<!-- Create Form Modal -->
+<div class="modal fade bg-opacity-high" id="modal-create-{{namespace}}" tabindex="-1" role="dialog" aria-hidden="true"
+    data-focus="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content bg-c-white-raw">
+            <div class="modal-header">
+                <span class="modal-title font-bold font-17">{{ page_title }}</span>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="payment-card-wrapper">
+                    <div id="payment-card-front" class="payment-card">
+                        <div class="chip-top"></div>
+                        <div class="chip"></div>
+                        <div id="payment-card-number"></div>
+                        <div id="payment-card-name"></div>
+                        <div id="valid-until">Valid Until</div>
+                        <div id="expiry-date"></div>
+                        <div id="visa-logo">VISA</div>
+                    </div>
+                    <div id="payment-card-back" class="payment-card">
+                        <div id="payment-card-back-strip"></div>
+                        <div id="payment-card-back-box"></div>
+                        <div id="payment-card-back-cvv">392</div>
+                        <div id="payment-card-back-label">CVV Number</div>
+                        <!--<div class="chip-top"></div>
+            <div class="chip"></div>-->
+                    </div>
+                </div>
+                <form id="payment-card-form" class="payment-card-form">
+                    {% csrf_token %}
+                    <div class="">
+                        <label  class="form-label font-bold">Name on Card</label>
+                        <input type="text" class="payment-cardname form-control" name="payment-card-name" placeholder="Name" maxlength="20" autofocus>
+                    </div>
+                    <div class="">
+                        <label  class="form-label font-bold">Card Number</label>
+                        <input type="number" class="payment-cardnumber form-control" name="payment-card-number"
+                            placeholder="Card Number" maxlength="19" autocomplete="off">
+                        <div id="emailHelp" class="form-text">
+                            <small>We'll never share your information with anyone else.</small>
+                        </div>
+                    </div>
+                    <div class="">
+                        <label  class="form-label font-bold">Expiry Date</label>
+                        <input type="text" class="expirydate form-control" name="expiry-date" placeholder="Expiry Date" maxlength="5">
+                    </div>
+                    <div class="">
+                        <label  class="form-label font-bold">CVC Number</label>
+                        <input id="flip" type="text" class="cvvnumber form-control" name="payment-card-back-cvv" placeholder="CVC Number"
+                        autocomplete="off" maxlength="3">
+                    </div>
+                    <div class="">
+                        <label  class="form-label font-bold">Card Type</label>
+                        <select class="form-select form-control" name="card-type">
+                            {% for card_type in card_types %}
+                            <option value="{{ card_type }}">{{ card_type }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="">
+                        <label  class="form-label font-bold">Company Name</label>
+                        <input type="text" class="form-control" name="company-name"
+                            placeholder="Company Name">
+                    </div>
+                    <div class="">
+                        <label  class="form-label font-bold">Payment Amount</label>
+                        <input type="number" class="form-control" name="payment-amount"
+                            placeholder="Payment Amount">
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked name="save-card" style="height: 15px;">
+                        <label class="form-check-label font-bold" for="flexCheckChecked">
+                            Save Card
+                        </label>
+                    </div>
+
+                    <div class="text-center mt-2">
+                        <button type="submit" class="btn btn-md btn-primary m-1">
+                            Submit
+                        </button>
+                        <button type="button" class="btn btn-md btn-danger m-1" data-dismiss="modal">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block additional_scripts %}
+
+<!-- BEGIN: JQuery Cards JS-->
+<script src="{% static 'vendors/jquery-cards/card-conf.js' %}"></script>
+<!-- END: JQuery Cards JS-->
+
+{% endblock %}

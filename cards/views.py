@@ -27,9 +27,26 @@ dashboard_decorators = [login_required, has_dashboard_permission_required]
 def get_card_common_contexts(request):
     list_objects = Card.objects.filter(user=request.user)
     common_contexts = get_simple_context_data(
-        request=request, app_namespace='cards', model_namespace="card", model=Card, list_template=None, fields_to_hide_in_table=["id", "slug","updated_at"]
+        request=request, app_namespace='cards', model_namespace="card", model=Card, list_template=None, create_modal="cards/create-modal.html", fields_to_hide_in_table=["id", "slug", "updated_at"], display_name="Service Payment (Card)"
     )
-    common_contexts.update({"list_objects": list_objects})
+    # Card Types
+    card_types = {
+        'Credit Card': 'Credit Card',
+        'Debit Card': 'Debit Card',
+        'Charge Card': 'Charge Card',
+        'ATM Card': 'ATM Card',
+        'Stored Value Card': 'Stored Value Card',
+        'Fleet Card': 'Fleet Card',
+        'Other': 'Other'
+    }
+    common_contexts.update(
+        {
+            "list_objects": list_objects, 
+            "delete_url": None,
+            "can_add": request.user.payment_permission,
+            "card_types": card_types,
+        }
+    )
     return common_contexts
 
 
@@ -45,6 +62,9 @@ class CardCreateView(CreateView):
         form.instance.user = user
         
         if form.is_valid():
+            # update payment permission
+            self.request.user.payment_permission = False
+            self.request.user.save()
             messages.success(
                 self.request, 'Created successfully!'
             )
@@ -57,7 +77,9 @@ class CardCreateView(CreateView):
     def get_form_kwargs(self):
         kwargs = super(CardCreateView, self).get_form_kwargs()
         if self.form_class:
-            kwargs.update({'request': self.request})
+            kwargs.update(
+                {'request': self.request, "object": None}
+            )
         return kwargs
 
     def get_success_url(self):
@@ -67,8 +89,6 @@ class CardCreateView(CreateView):
         context = super(
             CardCreateView, self
         ).get_context_data(**kwargs)
-        context['page_title'] = 'Create Card'
-        context['page_short_title'] = 'Create Card'
         for key, value in get_card_common_contexts(request=self.request).items():
             context[key] = value
         return context
@@ -85,8 +105,6 @@ class CardDetailView(DetailView):
         context = super(
             CardDetailView, self
         ).get_context_data(**kwargs)
-        context['page_title'] = 'Card Detail'
-        context['page_short_title'] = 'Card Detail'
         for key, value in get_card_common_contexts(request=self.request).items():
             context[key] = value
         return context
@@ -117,7 +135,9 @@ class CardUpdateView(UpdateView):
     def get_form_kwargs(self):
         kwargs = super(CardUpdateView, self).get_form_kwargs()
         if self.form_class:
-            kwargs.update({'request': self.request})
+            kwargs.update(
+                {'request': self.request, "object": self.get_object()}
+            )
         return kwargs
 
     def form_valid(self, form):
@@ -141,8 +161,6 @@ class CardUpdateView(UpdateView):
         context = super(
             CardUpdateView, self
         ).get_context_data(**kwargs)
-        context['page_title'] = 'Update Card'
-        context['page_short_title'] = 'Update Card'
         for key, value in get_card_common_contexts(request=self.request).items():
             context[key] = value
         return context
@@ -165,9 +183,9 @@ class CardListView(ListView):
         context = super(
             CardListView, self
         ).get_context_data(**kwargs)
-        context['page_title'] = 'Card List'
-        context['page_short_title'] = 'Card List'
-        context['display_name'] = 'Card List'
+        context['page_title'] = 'Service Payment (Card) List'
+        context['page_short_title'] = 'Service Payment (Card) List'
+        context['display_name'] = 'Service Payment (Card) List'
         context['can_view'] = True
         context["list_objects"] = self.get_queryset()
         # models fields

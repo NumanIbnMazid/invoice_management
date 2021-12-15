@@ -19,7 +19,8 @@ def has_dashboard_permission_required(view_func):
 
 
 has_payment_permission = user_passes_test(
-    lambda user: user.is_authenticated and user.payment_permission, login_url=settings.HOME_URL
+    # lambda user: user.is_authenticated and user.payment_permission, login_url=settings.HOME_URL
+    lambda user: user.is_authenticated, login_url=settings.HOME_URL
 )
 
 
