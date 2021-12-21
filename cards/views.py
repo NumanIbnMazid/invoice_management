@@ -32,7 +32,7 @@ dashboard_decorators = [login_required, has_dashboard_permission_required]
 def get_card_common_contexts(request):
     list_objects = Card.objects.filter(user=request.user)
     common_contexts = get_simple_context_data(
-        request=request, app_namespace='cards', model_namespace="card", model=Card, list_template="cards/list.html", create_modal="cards/create-modal.html", fields_to_hide_in_table=["id", "slug", "updated_at", "save_card"], allow_datatable_buttons=False, display_name="Service Payment"
+        request=request, app_namespace='cards', model_namespace="card", model=Card, list_template="cards/list.html", create_modal="cards/create-modal.html", fields_to_hide_in_table=["id", "slug", "updated_at", "save_card"], allow_datatable_buttons=False, display_name="Service"
     )
     # Card Types
     card_types = {

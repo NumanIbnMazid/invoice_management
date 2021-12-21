@@ -1,4 +1,6 @@
 {% load static %}
+{% load custom_tags %}
+{% get_dashboard_setting as dashboard_setting %}
 
 <!DOCTYPE html>
 <html>
@@ -23,7 +25,7 @@
 
     <nav class="navbar fixed-top navbar-expand-md custom-navbar navbar-dark">
       <a class="navbar-brand" href="{% url 'home' %}">
-        <h1>Home</h1>
+        <h1>{{ dashboard_setting.title }}</h1>
       </a>
       <button class="navbar-toggler navbar-toggler-right custom-toggler" type="button" data-toggle="collapse"
         data-target="#collapsibleNavbar">
