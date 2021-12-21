@@ -156,7 +156,7 @@ def delete_simple_object(request, key, model, redirect_url):
 """
 
 
-def get_simple_context_data(request=None, app_namespace=None, model_namespace=None, display_name=None, model=None, list_template=None, create_modal=None, fields_to_hide_in_table=[], validate_permissions=False, **kwargs):
+def get_simple_context_data(request=None, app_namespace=None, model_namespace=None, display_name=None, model=None, list_template=None, create_modal=None, fields_to_hide_in_table=[], allow_datatable_buttons=True, validate_permissions=False, **kwargs):
     """
     params: request, app_namespace (string), model_namespace (string), model (class), fields_to_hide_in_table (list), **kwargs
 
@@ -271,6 +271,7 @@ def get_simple_context_data(request=None, app_namespace=None, model_namespace=No
     MODEL_MANY_TO_FIELDS = model._meta.many_to_many
     
     common_contexts["fields_count"] = len(MODEL_FIELDS)
+    common_contexts["allow_datatable_buttons"] = allow_datatable_buttons
     common_contexts["fields"] = dict(
         [(f.name, f.verbose_name) for f in MODEL_FIELDS + MODEL_MANY_TO_FIELDS]
     )

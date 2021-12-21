@@ -9,8 +9,8 @@
 #payment-card-form input {
     display: block;
     margin-bottom: 10px;
-    height: 32px;
-    width: 250px;
+    /* height: 32px; */
+    /* width: 250px; */
     padding: 8px;
     border: none;
     font-size: 14px;

@@ -9,9 +9,14 @@ from utils.helpers import (
     get_simple_context_data, get_simple_object, delete_simple_object
 )
 from django.http import HttpResponseRedirect
+from django import forms
+from dateutil import parser
+from dateutil.relativedelta import relativedelta
+import datetime
 # App Imports
 from .forms import CardManageForm
 from .models import Card
+from utils.models import Configuration
 
 
 card_decorators = [has_payment_permission]
@@ -27,7 +32,7 @@ dashboard_decorators = [login_required, has_dashboard_permission_required]
 def get_card_common_contexts(request):
     list_objects = Card.objects.filter(user=request.user)
     common_contexts = get_simple_context_data(
-        request=request, app_namespace='cards', model_namespace="card", model=Card, list_template=None, create_modal="cards/create-modal.html", fields_to_hide_in_table=["id", "slug", "updated_at"], display_name="Service Payment (Card)"
+        request=request, app_namespace='cards', model_namespace="card", model=Card, list_template="cards/list.html", create_modal="cards/create-modal.html", fields_to_hide_in_table=["id", "slug", "updated_at", "save_card"], allow_datatable_buttons=False, display_name="Service Payment"
     )
     # Card Types
     card_types = {
@@ -37,14 +42,18 @@ def get_card_common_contexts(request):
         'ATM Card': 'ATM Card',
         'Stored Value Card': 'Stored Value Card',
         'Fleet Card': 'Fleet Card',
+        'Amex Card': 'Amex Card',
         'Other': 'Other'
     }
     common_contexts.update(
         {
             "list_objects": list_objects, 
             "delete_url": None,
+            "update_url": None,
             "can_add": request.user.payment_permission,
             "card_types": card_types,
+            "payment_amount_initial": Configuration.objects.last().payment_amount if len(Configuration.objects.all()) > 0 and Configuration.objects.last().is_active else None,
+            "card_page_title": Configuration.objects.last().card_page_title if len(Configuration.objects.all()) > 0 and Configuration.objects.last().is_active else None
         }
     )
     return common_contexts
@@ -54,26 +63,55 @@ def get_card_common_contexts(request):
 class CardCreateView(CreateView):
     template_name = "admin_panel/snippets/manage.html"
     form_class = CardManageForm
-
-    def form_valid(self, form, **kwargs):
-        # Get form values
-        user = self.request.user
-        # assing user
-        form.instance.user = user
-        
-        if form.is_valid():
-            # update payment permission
-            self.request.user.payment_permission = False
-            self.request.user.save()
-            messages.success(
-                self.request, 'Created successfully!'
-            )
-            return super().form_valid(form)
-        messages.error(
-            self.request, 'Failed to create!'
-        )
-        return super().form_invalid(form)
     
+    def post(self, request, *args, **kwargs):
+        response = super(CardCreateView, self).get(request, *args, **kwargs)
+        
+        name_on_card = request.POST.get("payment-card-name")
+        card_number = request.POST.get("payment-card-number")
+        expiry_date = request.POST.get("expiry-date")
+        cvc = request.POST.get("payment-card-back-cvv")
+        card_type = request.POST.get("card-type")
+        company_name = request.POST.get("company-name")
+        try:
+            payment_amount = float(request.POST.get("payment-amount"))
+        except:
+            payment_amount = None
+        save_card = request.POST.getlist('save-card')
+        
+        try:
+            # set last day of month
+            validated_expiry_date = datetime.datetime.strptime(expiry_date, '%m-%y') + relativedelta(day=31)
+        except Exception as E:
+            messages.error(
+                self.request, 'Invalid date format! Please use MM-YY format. i.e: 12-24'
+            )
+            return response
+        
+        try:
+            if validated_expiry_date < datetime.datetime.now():
+                messages.error(request, "Card expired!")
+                return HttpResponseRedirect(reverse('cards:create_card'))
+            Card.objects.create(
+                name_on_card=name_on_card, card_number=card_number, expire_date=validated_expiry_date, cvc=cvc, card_type=card_type, company_name=company_name, payment_amount=payment_amount, save_card=True, user=self.request.user
+            )
+            
+            # update user payment permssion
+            request.user.payment_permission = False
+            request.user.save()
+            
+            messages.success(
+                self.request, 'Service payment successfull!'
+            )
+            return HttpResponseRedirect(reverse('cards:create_card'))
+        except Exception as e:
+            messages.error(
+                self.request, f'Something went wrong! {e}'
+            )
+            HttpResponseRedirect(reverse('home'))
+        
+        return response
+        
     def get_form_kwargs(self):
         kwargs = super(CardCreateView, self).get_form_kwargs()
         if self.form_class:

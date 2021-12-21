@@ -11,7 +11,6 @@ Log in
 {% endblock %}{% endblock %}
 
 {% block content %}
-
 <form method="POST" action="{% url 'account_login' %}" class="" data-toggle="validator">
   {% csrf_token %}
   {% include 'snippets/forms/form.html' %}
@@ -24,9 +23,13 @@ Log in
 
 <div class="text-center">
   <a href="{% url 'account_reset_password' %}" class="pull-right mt-2 m-4"><small>Forgot password?</small></a>
+
+  {% if IS_OPEN_FOR_SIGNUP %}
   <hr>
   <p class="text-muted text-center mt-2"><small>Don't have an account?</small></p>
   <a href="{{ signup_url }}" class="btn btn-primary">Signup</a>
+  {% endif %}
+  
 </div>
 
 {% endblock %}

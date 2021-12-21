@@ -103,6 +103,8 @@
 
     {% endif %}
 
+    <input type="hidden" id="allow_datatable_buttons" value="{% if not allow_datatable_buttons == None %}{{ allow_datatable_buttons }}{% else %}True{% endif %}">
+
 </div>
 
 {% if can_add == True %}
@@ -141,15 +143,16 @@
 <script src="{% static 'vendors/jquery-datatable/buttons.colVis.min.js' %}"></script>
 <script>
     $(document).ready(function () {
+        let allow_datatable_buttons = $.parseJSON($('#allow_datatable_buttons').val().toLowerCase())
         $('#list-datatable').DataTable({
             "pagingType": "full_numbers",
             "dom": 'Bfrtip',
             "stateSave": true,
             "scrollCollapse": true,
-            "buttons": [
-                //'copy', 'csv', 'excel', 'pdf', 'print'
-                'colvis', 'copy', 'csv', 'excel', 'print'
-            ]
+            "buttons": (allow_datatable_buttons != false) ? [
+            //'copy', 'csv', 'excel', 'pdf', 'print'
+            'colvis', 'copy', 'csv', 'excel', 'print'
+            ] : []
         });
     });
 </script>

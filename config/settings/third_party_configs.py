@@ -24,6 +24,7 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'none'  # mandatory, optional, none
 ACCOUNT_USER_MODEL_EMAIL_FIELD = "email"
 ACCOUNT_USER_MODEL_USERNAME_FIELD = "username"
+ACCOUNT_ADAPTER = 'config.adapter.CustomAccountAdapter'
 
 
 """

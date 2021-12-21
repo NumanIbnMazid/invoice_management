@@ -76,6 +76,7 @@ INSTALLED_APPS = [
 
 """ *** Authentication Definitions *** """
 AUTH_USER_MODEL = 'users.User'
+IS_OPEN_FOR_SIGNUP = False
 AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
@@ -109,6 +110,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # custom context processors
+                'utils.context_processors.is_open_for_signup',
             ],
         },
     },

@@ -12,5 +12,5 @@ from django.utils.translation import gettext_lazy as _
 
 class Currency(models.TextChoices):
     BDT = "BDT", _("BDT")
-    DOLLAR = "DOLLAR", _("DOLLAR")
+    USD = "USD", _("USD")
     EURO = "EURO", _("EURO")

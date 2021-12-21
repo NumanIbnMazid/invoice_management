@@ -12,4 +12,4 @@ class ConfigurationManageForm(CustomModelForm):
 
     class Meta:
         model = Configuration
-        fields = ['payment_amount', 'currency', 'is_active']
+        fields = ['payment_amount', 'currency', 'card_page_title', 'is_active']
