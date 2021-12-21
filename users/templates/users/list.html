@@ -88,6 +88,7 @@
                                     {% endif %}
                                     {% endif %}
 
+                                    {% if not object.is_superuser %}
                                     {% if not delete_url == None and can_delete == True %}
                                     {% if not object.slug == None %}
                                     <button type="button"
@@ -103,6 +104,7 @@
                                         data-target="#modal-delete-{{namespace}}">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
+                                    {% endif %}
                                     {% endif %}
                                     {% endif %}
                                 </div>
